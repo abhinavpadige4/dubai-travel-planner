@@ -3,7 +3,7 @@ export interface ItineraryDay {
   title: string;
   description: string;
   icon: string;
-  highlights: string[];
+  tips?: string[];
 }
 
 export interface BudgetCategory {
@@ -14,7 +14,7 @@ export interface BudgetCategory {
 export interface PackingItem {
   id: number;
   item: string;
-  packed: boolean;
+  checked: boolean;
 }
 
 export interface Restaurant {
@@ -23,6 +23,7 @@ export interface Restaurant {
   cuisine: string;
   rating: number;
   description: string;
+  priceRange: string;
 }
 
 export interface EmergencyContact {
@@ -33,9 +34,5 @@ export interface EmergencyContact {
 export interface VisaInfo {
   title: string;
   content: string;
-}
-
-export interface FooterLink {
-  name: string;
-  href: string;
+  note: string;
 }
