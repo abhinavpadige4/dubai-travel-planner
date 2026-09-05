@@ -9,7 +9,7 @@ import EmergencyContacts from './components/EmergencyContacts';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-950 text-white font-sans antialiased">
+    <div className="min-h-screen bg-gradient-to-b from-[#2D1B17] to-[#1A0F08] text-white font-sans antialiased">
       <Hero />
       <ItineraryList />
       <BudgetTracker />
