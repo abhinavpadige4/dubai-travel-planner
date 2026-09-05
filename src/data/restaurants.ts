@@ -15,30 +15,30 @@ export const restaurants = [
   },
   {
     id: 3,
-    name: 'Ravi Restaurant',
-    cuisine: 'Pakistani',
-    rating: 4.6,
-    description: 'Legendary spot for authentic Pakistani and Indian cuisine. Try the nihari and haleem for a true local experience.'
+    name: 'Zuma',
+    cuisine: 'Japanese',
+    rating: 4.8,
+    description: 'Contemporary Japanese izakaya style dining in the heart of DIFC. Known for robata grill and sushi.'
   },
   {
     id: 4,
-    name: 'La Petite Maison',
-    cuisine: 'French-Mediterranean',
-    rating: 4.8,
-    description: 'Chic bistro offering Niçoise-inspired dishes. Famous for truffle pasta and fresh seafood platters.'
+    name: 'La Serre',
+    cuisine: 'French',
+    rating: 4.6,
+    description: 'Elegant bistro in Downtown Dubai with lush garden setting. Perfect for brunch or romantic dinner.'
   },
   {
     id: 5,
-    name: 'Zuma',
-    cuisine: 'Japanese',
-    rating: 4.7,
-    description: 'Contemporary Japanese izakaya with robata grill and sushi bar. Known for miso black cod and rock shrimp tempura.'
+    name: 'Bu Qtair',
+    cuisine: 'Seafood',
+    rating: 4.5,
+    description: 'No-frills beachside shack serving some of the best fried fish in Dubai. Popular with locals and expats alike.'
   },
   {
     id: 6,
     name: 'Al Hadheerah',
     cuisine: 'Emirati',
-    rating: 4.5,
-    description: 'Authentic Emirati cuisine in a desert fort setting. Live cooking stations and traditional entertainment.'
+    rating: 4.7,
+    description: 'Authentic Emirati cuisine in a desert fort setting at Bab Al Shams. Live entertainment and traditional ambiance.'
   }
 ];
