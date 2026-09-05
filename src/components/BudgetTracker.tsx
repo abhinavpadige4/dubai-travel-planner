@@ -1,189 +1,239 @@
 ```tsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useMemo } from 'react';
 
 interface BudgetCategory {
   id: string;
   label: string;
   icon: string;
   value: number;
-  placeholder: string;
   suggestedMin: number;
   suggestedMax: number;
+  tips: string;
 }
 
-const BudgetTracker: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
+interface BudgetTrackerProps {
+  isVisible: boolean;
+}
 
+const BudgetTracker: React.FC<BudgetTrackerProps> = ({ isVisible }) => {
   const [budget, setBudget] = useState<BudgetCategory[]>([
-    { id: 'transport', label: 'Transport', icon: '🚗', value: 0, placeholder: 'e.g., 500', suggestedMin: 300, suggestedMax: 800 },
-    { id: 'accommodation', label: 'Accommodation', icon: '🏨', value: 0, placeholder: 'e.g., 2000', suggestedMin: 1000, suggestedMax: 4000 },
-    { id: 'food', label: 'Food & Dining', icon: '🍽️', value: 0, placeholder: 'e.g., 800', suggestedMin: 400, suggestedMax: 1500 },
-    { id: 'activities', label: 'Activities', icon: '🎯', value: 0, placeholder: 'e.g., 1000', suggestedMin: 500, suggestedMax: 2000 },
-    { id: 'misc', label: 'Miscellaneous', icon: '🛍️', value: 0, placeholder: 'e.g., 300', suggestedMin: 200, suggestedMax: 600 },
+    {
+      id: 'transport',
+      label: 'Transport',
+      icon: '🚗',
+      value: 0,
+      suggestedMin: 100,
+      suggestedMax: 300,
+      tips: 'Metro, taxis, and occasional car rentals',
+    },
+    {
+      id: 'accommodation',
+      label: 'Accommodation',
+      icon: '🏨',
+      value: 0,
+      suggestedMin: 500,
+      suggestedMax: 2000,
+      tips: '9 nights × average nightly rate',
+    },
+    {
+      id: 'food',
+      label: 'Food & Dining',
+      icon: '🍽️',
+      value: 0,
+      suggestedMin: 200,
+      suggestedMax: 600,
+      tips: 'Mix of casual and fine dining',
+    },
+    {
+      id: 'activities',
+      label: 'Activities & Tours',
+      icon: '🎯',
+      value: 0,
+      suggestedMin: 300,
+      suggestedMax: 800,
+      tips: 'Attractions, safaris, cruises, etc.',
+    },
+    {
+      id: 'misc',
+      label: 'Miscellaneous',
+      icon: '🛍️',
+      value: 0,
+      suggestedMin: 100,
+      suggestedMax: 500,
+      tips: 'Shopping, souvenirs, tips, extras',
+    },
   ]);
 
-  const total = budget.reduce((sum, item) => sum + item.value, 0);
+  const [currency, setCurrency] = useState<'USD' | 'AED'>('USD');
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
+  const total = useMemo(() => {
+    return budget.reduce((sum, cat) => sum + cat.value, 0);
+  }, [budget]);
 
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  const handleInputChange = (id: string, value: string) => {
-    const numValue = parseFloat(value) || 0;
+  const updateValue = (id: string, newValue: number) => {
     setBudget((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, value: numValue } : item))
+      prev.map((cat) => (cat.id === id ? { ...cat, value: Math.max(0, newValue) } : cat))
     );
   };
 
-  const handleReset = () => {
-    setBudget((prev) => prev.map((item) => ({ ...item, value: 0 })));
+  const resetBudget = () => {
+    setBudget((prev) => prev.map((cat) => ({ ...cat, value: 0 })));
   };
 
-  const getMaxBudget = budget.reduce((sum, item) => sum + item.suggestedMax, 0);
-  const budgetPercentage = Math.min((total / getMaxBudget) * 100, 100);
-
-  const getBudgetStatus = () => {
-    if (total === 0) return { label: 'Start adding expenses', color: 'text-gray-500' };
-    if (budgetPercentage <= 50) return { label: 'Budget-friendly', color: 'text-green-400' };
-    if (budgetPercentage <= 75) return { label: 'Moderate spending', color: 'text-amber-400' };
-    if (budgetPercentage <= 100) return { label: 'Premium experience', color: 'text-orange-400' };
-    return { label: 'Over budget', color: 'text-red-400' };
+  const fillSuggested = () => {
+    setBudget((prev) =>
+      prev.map((cat) => ({
+        ...cat,
+        value: Math.round((cat.suggestedMin + cat.suggestedMax) / 2),
+      }))
+    );
   };
 
-  const status = getBudgetStatus();
+  const displayTotal = currency === 'AED' ? Math.round(total * 3.67) : total;
+  const currencySymbol = currency === 'AED' ? 'AED ' : '$';
+
+  const getProgressColor = (value: number, min: number, max: number) => {
+    if (value === 0) return 'bg-gray-700';
+    const ratio = value / max;
+    if (ratio < 0.5) return 'bg-green-500';
+    if (ratio < 0.8) return 'bg-amber-500';
+    return 'bg-orange-500';
+  };
 
   return (
-    <section ref={sectionRef} className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+    <section className="py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium mb-4">
-            💰 Plan Your Spending
+        <div className={`text-center mb-12 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+          <span className="inline-block px-4 py-2 glass-card rounded-full text-amber-400 text-sm font-medium mb-4">
+            💰 Money Matters
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
-              Budget Tracker
-            </span>
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
+            <span className="gradient-text">Budget Tracker</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            Estimate your trip costs across all major categories.
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Plan your spending across categories to stay on track
           </p>
         </div>
 
-        {/* Budget Card */}
-        <div
-          className={`rounded-2xl bg-white/5 border border-amber-500/20 backdrop-blur-sm overflow-hidden transition-all duration-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <div className="p-6 sm:p-8">
-            {/* Budget Categories */}
-            <div className="space-y-6">
-              {budget.map((item) => (
-                <div key={item.id} className="group">
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
-                      <span className="text-lg">{item.icon}</span>
-                      {item.label}
-                    </label>
-                    <span className="text-sm text-gray-500">
-                      Suggested: ${item.suggestedMin} - ${item.suggestedMax}
-                    </span>
-                  </div>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-lg">$</span>
-                    <input
-                      type="number"
-                      min="0"
-                      value={item.value || ''}
-                      placeholder={item.placeholder}
-                      onChange={(e) => handleInputChange(item.id, e.target.value)}
-                      className="w-full pl-8 pr-4 py-3 rounded-xl bg-gray-900/50 border border-amber-500/20 text-gray-100 placeholder-gray-600 focus:outline-none focus:border-amber-400/50 focus:ring-2 focus:ring-amber-400/20 transition-all duration-300 text-lg"
-                    />
-                  </div>
-                  {/* Progress bar for each category */}
-                  <div className="mt-2 h-1.5 rounded-full bg-gray-800 overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-500"
-                      style={{ width: `${Math.min((item.value / item.suggestedMax) * 100, 100)}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Currency Toggle & Actions */}
+        <div className={`flex flex-wrap items-center justify-between gap-4 mb-8 ${isVisible ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>
+          <div className="flex items-center gap-2 glass-card rounded-xl p-1">
+            <button
+              onClick={() => setCurrency('USD')}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                currency === 'USD'
+                  ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-lg'
+                  : 'text-gray-400 hover:text-amber-400'
+              }`}
+            >
+              USD ($)
+            </button>
+            <button
+              onClick={() => setCurrency('AED')}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                currency === 'AED'
+                  ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-lg'
+                  : 'text-gray-400 hover:text-amber-400'
+              }`}
+            >
+              AED (د.إ)
+            </button>
+          </div>
 
-            {/* Divider */}
-            <div className="my-8 border-t border-amber-500/20" />
-
-            {/* Total Section */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <div className="text-sm text-gray-500 mb-1">Estimated Total</div>
-                <div className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
-                  ${total.toLocaleString()}
-                </div>
-                <div className={`text-sm font-medium mt-1 ${status.color}`}>
-                  {status.label}
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={handleReset}
-                  className="px-5 py-2.5 rounded-xl text-sm font-medium text-gray-400 border border-gray-700 hover:border-amber-500/30 hover:text-amber-300 hover:bg-amber-500/10 transition-all duration-300"
-                >
-                  Reset All
-                </button>
-              </div>
-            </div>
-
-            {/* Overall Budget Bar */}
-            <div className="mt-6">
-              <div className="flex items-center justify-between text-sm text-gray-500 mb-2">
-                <span>Budget Utilization</span>
-                <span>{budgetPercentage.toFixed(0)}%</span>
-              </div>
-              <div className="h-3 rounded-full bg-gray-800 overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all duration-700 ${
-                    budgetPercentage <= 50
-                      ? 'bg-gradient-to-r from-green-500 to-emerald-500'
-                      : budgetPercentage <= 75
-                      ? 'bg-gradient-to-r from-amber-500 to-yellow-500'
-                      : budgetPercentage <= 100
-                      ? 'bg-gradient-to-r from-orange-500 to-amber-500'
-                      : 'bg-gradient-to-r from-red-500 to-orange-500'
-                  }`}
-                  style={{ width: `${budgetPercentage}%` }}
-                />
-              </div>
-            </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={fillSuggested}
+              className="px-4 py-2 glass-card rounded-lg text-sm text-amber-400 hover:border-amber-500/40 transition-all duration-300"
+            >
+              ✨ Fill Suggested
+            </button>
+            <button
+              onClick={resetBudget}
+              className="px-4 py-2 glass-card rounded-lg text-sm text-gray-400 hover:text-red-400 hover:border-red-500/30 transition-all duration-300"
+            >
+              🔄 Reset
+            </button>
           </div>
         </div>
 
-        {/* Tips */}
-        <div className="mt-8 p-6 rounded-2xl bg-amber-500/5 border border-amber-500/15">
-          <div className="flex items-start gap-3">
-            <span className="text-2xl flex-shrink-0">💡</span>
-            <div>
-              <h4 className="font-semibold text-amber-300 mb-2">Budget Tips</h4>
-              <ul className="space-y-1.5 text-sm text-gray-400">
-                <li>• Book flights and hotels in advance for better rates</li>
-                <li>• Use the Dubai Metro for affordable transportation</li>
-                <li>• Look for combo tickets for attractions</li>
-                <li>• Visit free attractions like beaches and public parks</li>
-              </ul>
+        {/* Budget Categories */}
+        <div className="space-y-4 mb-8">
+          {budget.map((category, index) => (
+            <div
+              key={category.id}
+              className={`glass-card glass-card-hover rounded-xl p-5 transition-all duration-500 ${
+                isVisible ? 'animate-fade-in-up' : 'opacity-0'
+              }`}
+              style={{ animationDelay: `${(index + 3) * 100}ms` }}
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                {/* Icon & Label */}
+                <div className="flex items-center gap-3 sm:w-48 flex-shrink-0">
+                  <span className="text-2xl">{category.icon}</span>
+                  <div>
+                    <h3 className="font-semibold text-white">{category.label}</h3>
+                    <p className="text-xs text-gray-500">{category.tips}</p>
+                  </div>
+                </div>
+
+                {/* Input */}
+                <div className="flex-1">
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-500 font-semibold">
+                      {currencySymbol}
+                    </span>
+                    <input
+                      type="number"
+                      value={category.value || ''}
+                      onChange={(e) => updateValue(category.id, Number(e.target.value))}
+                      placeholder="0"
+                      className="w-full pl-10 pr-4 py-3 bg-gray-900/50 border border-amber-800/30 rounded-lg text-white font-semibold focus:outline-none focus:border-amber-500/60 focus:ring-2 focus:ring-amber-500/20 transition-all duration-300"
+                    />
+                  </div>
+
+                  {/* Progress Bar */}
+                  <div className="mt-2 h-2 bg-gray-800 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${getProgressColor(
+                        category.value,
+                        category.suggestedMin,
+                        category.suggestedMax
+                      )}`}
+                      style={{
+                        width: `${Math.min(100, (category.value / category.suggestedMax) * 100)}%`,
+                      }}
+                    />
+                  </div>
+                  <div className="flex justify-between mt-1">
+                    <span className="text-xs text-gray-600">
+                      {currencySymbol}{category.suggestedMin}
+                    </span>
+                    <span className="text-xs text-gray-600">
+                      {currencySymbol}{category.suggestedMax}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
+        </div>
+
+        {/* Total */}
+        <div
+          className={`glass-card rounded-2xl p-8 text-center transition-all duration-500 ${
+            isVisible ? 'animate-scale-in delay-800' : 'opacity-0'
+          }`}
+        >
+          <p className="text-gray-400 text-sm uppercase tracking-wider mb-2">Estimated Total</p>
+          <p className="text-5xl sm:text-6xl font-bold gradient-text mb-2">
+            {currencySymbol}{displayTotal.toLocaleString()}
+          </p>
+          <p className="text-gray-500 text-sm">
+            {currency === 'USD'
+              ? `≈ AED ${Math.round(total * 3.67).toLocaleString()}`
+              : `≈ $${total.toLocaleString()} USD`}
+          </p>
         </div>
       </div>
     </section>
