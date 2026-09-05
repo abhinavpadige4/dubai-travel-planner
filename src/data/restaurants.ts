@@ -15,30 +15,30 @@ export const restaurants = [
   },
   {
     id: 3,
-    name: 'Zuma',
-    cuisine: 'Japanese',
-    rating: 4.8,
-    description: 'Contemporary Japanese izakaya style dining. Known for robata grill and sushi bars.'
+    name: 'Ravi Restaurant',
+    cuisine: 'Pakistani',
+    rating: 4.6,
+    description: 'Legendary spot for authentic Pakistani and Indian cuisine. Try the nihari and haleem for a true local experience.'
   },
   {
     id: 4,
     name: 'La Petite Maison',
-    cuisine: 'French',
-    rating: 4.6,
-    description: 'Nice-inspired Mediterranean cuisine. Famous for dishes like truffle pasta and sea bass.'
+    cuisine: 'French-Mediterranean',
+    rating: 4.8,
+    description: 'Chic bistro offering Niçoise-inspired dishes. Famous for truffle pasta and fresh seafood platters.'
   },
   {
     id: 5,
-    name: 'Ravi Restaurant',
-    cuisine: 'Pakistani',
-    rating: 4.5,
-    description: 'Legendary spot for authentic Pakistani and Indian cuisine. Try the butter chicken and naan.'
+    name: 'Zuma',
+    cuisine: 'Japanese',
+    rating: 4.7,
+    description: 'Contemporary Japanese izakaya with robata grill and sushi bar. Known for miso black cod and rock shrimp tempura.'
   },
   {
     id: 6,
-    name: 'Nusr-Et Steakhouse',
-    cuisine: 'Steakhouse',
-    rating: 4.4,
-    description: 'Famous for Salt Bae\'s viral steak technique. Luxury dining experience with premium cuts.'
+    name: 'Al Hadheerah',
+    cuisine: 'Emirati',
+    rating: 4.5,
+    description: 'Authentic Emirati cuisine in a desert fort setting. Live cooking stations and traditional entertainment.'
   }
 ];
