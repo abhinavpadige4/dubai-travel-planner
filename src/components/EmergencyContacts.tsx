@@ -1,70 +1,58 @@
 ```tsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 
-interface Contact {
+interface EmergencyContact {
   name: string;
-  number: string;
   icon: string;
+  number: string;
   description: string;
   color: string;
 }
 
-const contacts: Contact[] = [
+const emergencyContacts: EmergencyContact[] = [
   {
     name: 'Police',
-    number: '999',
     icon: '🚔',
-    description: 'Emergency police services for all urgent situations',
-    color: 'from-blue-500 to-blue-600',
+    number: '999',
+    description: 'Emergency police services',
+    color: 'from-blue-600 to-blue-800',
   },
   {
     name: 'Ambulance',
-    number: '998',
     icon: '🚑',
-    description: 'Emergency medical services and ambulance',
-    color: 'from-red-500 to-red-600',
+    number: '998',
+    description: 'Emergency medical services',
+    color: 'from-red-600 to-red-800',
   },
   {
     name: 'Tourism Police',
+    icon: '👮',
     number: '800-4444',
-    icon: '🛡️',
-    description: 'Tourism police for tourist-related issues and assistance',
-    color: 'from-amber-500 to-orange-500',
+    description: 'Tourist assistance & complaints',
+    color: 'from-amber-600 to-amber-800',
   },
   {
     name: 'Fire Department',
-    number: '997',
     icon: '🚒',
-    description: 'Emergency fire and rescue services',
-    color: 'from-orange-500 to-red-500',
+    number: '997',
+    description: 'Fire & rescue services',
+    color: 'from-orange-600 to-orange-800',
   },
   {
-    name: 'Marina Police',
-    number: '800-6666',
-    icon: '⚓',
-    description: 'Maritime and water-related emergencies',
-    color: 'from-cyan-500 to-blue-500',
+    name: 'Dubai Emergency',
+    icon: '📞',
+    number: '901',
+    description: 'Non-emergency government services',
+    color: 'from-purple-600 to-purple-800',
   },
   {
     name: 'Roadside Assistance',
-    number: '800-999',
     icon: '🔧',
-    description: 'RTA roadside assistance for vehicle breakdowns',
-    color: 'from-green-500 to-emerald-500',
+    number: '800-NAS (627)',
+    description: 'RTA roadside help',
+    color: 'from-teal-600 to-teal-800',
   },
 ];
 
-const EmergencyContacts: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () =>
+const usefulNumbers: { name: string; number: string; icon: string }[] = [
+  { name: 'Dubai Metro Helpline', number: '800-5111', icon: '
