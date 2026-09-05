@@ -1,17 +1,17 @@
 # Dubai Travel Planner
 
-A beautiful 10-day Dubai travel itinerary web app with budget tracker, packing checklist, visa info, restaurant recommendations, and emergency contacts.
+A beautiful 10-day Dubai travel planner web app with budget tracker, packing checklist, visa info, restaurant recommendations, and emergency contacts.
 
 ## Features
 
 - **10-Day Itinerary**: Day-by-day guide to Dubai's top attractions
-- **Budget Tracker**: Monitor expenses across transport, accommodation, food, activities, and miscellaneous
-- **Packing Checklist**: Essential items for your Dubai trip
-- **Visa Information**: Up-to-date visa requirements
-- **Restaurant Recommendations**: Top dining spots with cuisine and ratings
+- **Budget Tracker**: Track expenses across transport, accommodation, food, activities, and miscellaneous
+- **Packing Checklist**: Essential items to pack for your Dubai trip
+- **Visa Information**: Up-to-date visa requirements for Dubai
+- **Restaurant Recommendations**: Top dining spots with cuisine types and ratings
 - **Emergency Contacts**: Important phone numbers for safety
 - **Responsive Design**: Works on mobile, tablet, and desktop
-- **Dark Desert Theme**: Warm sand tones with glassmorphism effects
+- **Dark Desert Theme**: Warm desert colors with glassmorphism effects
 
 ## Tech Stack
 
@@ -30,73 +30,64 @@ A beautiful 10-day Dubai travel itinerary web app with budget tracker, packing c
 
 ### Installation
 
+1. Clone the repository
 ```bash
-# Clone the repository
 git clone <repository-url>
 cd dubai-travel-planner
+```
 
-# Install dependencies
+2. Install dependencies
+```bash
 npm install
 # or
 yarn install
 ```
 
-### Development
-
+3. Start the development server
 ```bash
-# Start development server
 npm run dev
 # or
 yarn dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) to view the app in your browser.
+4. Open [http://localhost:5173](http://localhost:5173) in your browser
 
-### Building for Production
+## Building for Production
 
 ```bash
-# Build for production
 npm run build
 # or
 yarn build
 ```
 
-### Preview Production Build
-
-```bash
-# Preview the production build
-npm run preview
-# or
-yarn preview
-```
+The built files will be in the `dist` directory.
 
 ## Deployment to Vercel
 
-The app is configured for easy deployment to Vercel:
+This app is configured for easy deployment to Vercel:
 
 1. Push your code to a GitHub/GitLab/Bitbucket repository
 2. Import the project in Vercel
-3. Vercel will automatically detect the Vite configuration and deploy the app
-4. No additional configuration needed - the `vercel.json` file handles routing
+3. Vercel will automatically detect the Vite configuration and deploy your app
+4. Visit your deployed URL to see the live app
 
 ## Design System
 
-### Colors
-
-- Primary Sand: `#D2B48C` (Desert sand)
-- Accent Gradient: Terracotta to Sunset (`#E2725B` to `#FF6B35`)
-- Dark Background: `#121212` (Tailwind's `gray-900`)
-- Card Background: `rgba(30, 30, 30, 0.7)` (Glassmorphism effect)
-- Text: `gray-100` with `gray-300` for secondary text
+### Colors (Warm Desert Dark Theme)
+- Primary: `#D2B48C` (Tan)
+- Accent Gradient: `from-[#C1440E] to-[#E07A5F]` (Terracotta to Sunset)
+- Background: `#0F172A` (Dark Slate)
+- Card Background: `rgba(15, 23, 42, 0.6)` (Glassmorphism)
+- Border: `1px solid rgba(210, 180, 140, 0.2)` (Sand)
 
 ### Components
-
 All components use:
-- Glassmorphism cards with sand-colored borders
-- Rounded shadows (`shadow-xl`)
+- Glassmorphism cards with sand borders
+- Gradient accents (terracotta to sunset)
 - Subtle fade-in animations
-- Responsive grid layouts
-- Warm desert tones throughout
+- Warm desert tones
+- Rounded shadows
+- Responsive grid layout
 
 ## Project Structure
 
@@ -104,13 +95,13 @@ All components use:
 src/
 ├── components/
 │   ├── BudgetTracker.tsx
+│   ├── EmergencyContacts.tsx
 │   ├── Footer.tsx
 │   ├── Hero.tsx
 │   ├── Itinerary.tsx
 │   ├── PackingChecklist.tsx
 │   ├── RestaurantRecommendations.tsx
-│   ├── VisaInfo.tsx
-│   └── EmergencyContacts.tsx
+│   └── VisaInfo.tsx
 ├── App.tsx
 ├── main.tsx
 ├── index.css
@@ -119,21 +110,32 @@ src/
 
 ## Customization
 
-### Adding More Restaurant Recommendations
+### Changing the Itinerary
+Edit the `itineraryData` array in `src/components/Itinerary.tsx` to modify day-by-day activities.
 
-Edit `src/components/RestaurantRecommendations.tsx` to add more restaurant cards following the existing pattern.
+### Updating Restaurant Recommendations
+Modify the `restaurants` array in `src/components/RestaurantRecommendations.tsx`.
 
-### Modifying the Itinerary
+### Adjusting Budget Categories
+Edit the `budgetCategories` array in `src/components/BudgetTracker.tsx`.
 
-Edit `src/components/Itinerary.tsx` to change day titles, icons, or add descriptions.
+### Changing Theme Colors
+Update the color values in `src/index.css`:
+- `--primary-color`: Main accent color
+- `--gradient-start`: Gradient start color
+- `--gradient-end`: Gradient end color
 
-### Changing Colors
+## Contributing
 
-Update the color variables in `src/index.css` or modify the Tailwind configuration in `tailwind.config.cjs`.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-MIT
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
@@ -141,6 +143,5 @@ MIT
 - Tailwind CSS for the utility-first framework
 - Vercel for seamless deployment
 - Vite for fast development experience
-- React team for the powerful UI library
-
-Enjoy planning your Dubai adventure! 🏜️🏙️
+- React 18 for modern UI development
+- TypeScript for type safety
