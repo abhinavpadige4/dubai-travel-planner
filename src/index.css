@@ -1,125 +1,49 @@
-```css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
   }
 
   body {
-    @apply bg-dark-500 text-sand-100;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  }
-
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-dark-400;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-sand-700 rounded-full;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-sand-600;
-  }
-
-  ::selection {
-    @apply bg-terracotta-500/30 text-sand-50;
+    @apply bg-background text-foreground;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-dark-200/60 backdrop-blur-md border border-sand-400/20 rounded-2xl shadow-glass;
-  }
-
-  .glass-card-hover {
-    @apply glass-card transition-all duration-300 hover:bg-dark-200/80 hover:border-sand-400/40 hover:shadow-sand hover:-translate-y-1;
-  }
-
-  .sand-gradient-text {
-    @apply bg-gradient-to-r from-sand-300 via-sand-400 to-sand-300 bg-clip-text text-transparent;
-  }
-
-  .terracotta-gradient-text {
-    @apply bg-gradient-to-r from-terracotta-400 via-sunset-400 to-terracotta-400 bg-clip-text text-transparent;
+    @apply bg-dark-card/70 backdrop-blur-sm border border-sand/20 rounded-xl shadow-glass transition-all duration-300 hover:shadow-lg hover:border-sand/40;
   }
 
   .btn-primary {
-    @apply px-8 py-3 rounded-xl font-semibold text-dark-500 bg-gradient-to-r from-terracotta-500 to-sunset-500 hover:from-terracotta-400 hover:to-sunset-400 transition-all duration-300 shadow-terracotta hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
-  }
-
-  .btn-secondary {
-    @apply px-8 py-3 rounded-xl font-semibold border-2 border-sand-400/40 text-sand-300 hover:bg-sand-400/10 hover:border-sand-400/60 transition-all duration-300;
-  }
-
-  .section-title {
-    @apply text-3xl md:text-4xl font-bold sand-gradient-text mb-2;
-  }
-
-  .section-subtitle {
-    @apply text-sand-400/70 text-lg mb-8;
+    @apply bg-terracotta hover:bg-sunset text-white font-medium py-2 px-6 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg;
   }
 
   .input-field {
-    @apply w-full px-4 py-3 rounded-xl bg-dark-300/80 border border-sand-400/20 text-sand-100 placeholder-sand-600 focus:outline-none focus:border-sand-400/50 focus:ring-2 focus:ring-sand-400/20 transition-all duration-300;
+    @apply w-full px-4 py-3 bg-dark-card/50 border border-sand/20 rounded-lg text-white placeholder-sand/50 focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-sand/40 transition-all duration-300;
+  }
+
+  .checkbox-custom {
+    @apply w-4 h-4 border border-sand/40 rounded bg-dark-card/50 text-terracotta focus:ring-2 focus:ring-terracotta focus:border-terracotta transition-all duration-300;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold mb-6 text-sand;
   }
 
   .day-card {
-    @apply glass-card-hover p-6 flex flex-col gap-3;
+    @apply glass-card p-6 h-full border-sand/30;
   }
 
-  .check-item {
-    @apply flex items-center gap-3 p-3 rounded-xl transition-all duration-200 hover:bg-dark-200/40 cursor-pointer;
+  .day-icon {
+    @apply w-10 h-10 bg-terracotta/20 rounded-full flex items-center justify-center mb-4;
   }
-
-  .check-item.checked {
-    @apply bg-sand-400/10;
-  }
-
-  .check-box {
-    @apply w-5 h-5 rounded-md border-2 border-sand-500/40 flex items-center justify-center transition-all duration-200 flex-shrink-0;
-  }
-
-  .check-box.checked {
-    @apply bg-sand-400 border-sand-400;
-  }
-
-  .restaurant-card {
-    @apply glass-card-hover p-5 flex flex-col gap-2;
-  }
-
-  .contact-item {
-    @apply flex items-center justify-between p-4 rounded-xl bg-dark-300/40 border border-sand-400/10 hover:border-sand-400/30 transition-all duration-200;
-  }
-}
-
-@layer utilities {
-  .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  }
-
-  .animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .stagger-1 { transition-delay: 0.1s; }
-  .stagger-2 { transition-delay: 0.2s; }
-  .stagger-3 { transition-delay: 0.3s; }
-  .stagger-4 { transition-delay: 0.4s; }
-  .stagger-5 { transition-delay: 0.5s; }
-  .stagger-6 { transition-delay: 0.6s; }
-  .stagger-7 { transition-delay: 0.7s; }
-  .stagger-8 { transition-delay: 0.8s; }
-  .stagger-9 { transition-delay: 0.9s; }
-  .stagger-10 { transition-delay: 1.0s; }
 }
