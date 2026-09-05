@@ -21,9 +21,9 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ restaurant }) => {
             {index < restaurant.rating ? '★' : '☆'}
           </span>
         ))}
-        <span className="ml-2 text-sm text-gray-300">({restaurant.rating}/5)</span>
+        <span className="ml-2 text-sm text-gray-400">({restaurant.rating})</span>
       </div>
-      <p className="text-gray-300 text-sm">{restaurant.description}</p>
+      <p className="text-sm text-gray-300 line-clamp-3">{restaurant.description}</p>
     </div>
   );
 };
