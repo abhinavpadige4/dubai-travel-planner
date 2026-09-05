@@ -6,108 +6,85 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
   }
 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 212.7 26.8% 17.6%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 212.7 26.8% 17.6%;
-    --muted-foreground: 210 40% 98%;
-    --accent: 212.7 26.8% 17.6%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 212.7 26.8% 17.6%;
-    --input: 212.7 26.8% 17.6%;
-    --ring: 212.7 26.8% 17.6%;
-    --radius: 0.5rem;
+  }
+
+  body {
+    @apply bg-background-100 text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-dark-card/70 backdrop-blur-sm border border-glass-border rounded-xl shadow-glass;
+    @apply bg-background-200/30 backdrop-blur-glass border border-white/20 rounded-xl shadow-glass transition-all duration-300;
   }
 
-  .sand-accent {
-    @apply border-sand/50 bg-gradient-to-br from-terracotta/10 to-sunset/5;
+  .glass-card:hover {
+    @apply shadow-glass-hover transform scale-105;
   }
 
-  .terracotta-text {
-    @apply text-terracotta;
+  .btn-primary {
+    @apply bg-desert-600 hover:bg-desert-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
   }
 
-  .sunset-text {
-    @apply text-sunset;
+  .btn-secondary {
+    @apply bg-background-200/50 hover:bg-background-200/70 text-white font-medium py-2 px-4 rounded-lg border border-white/20 transition-colors duration-200;
   }
 
-  .sand-text {
-    @apply text-sand;
+  .input-field {
+    @apply w-full px-4 py-3 bg-background-200/50 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-desert-600 focus:border-transparent transition-all duration-200;
   }
 
-  .dark-bg {
-    @apply bg-dark-bg;
+  .select-field {
+    @apply w-full px-4 py-3 bg-background-200/50 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-desert-600 focus:border-transparent transition-all duration-200 appearance-none bg-[url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23FFFFFF"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>')] bg-right-2.5 bg-center no-repeat bg-contain [background-size:1.5em];
+  }
+
+  .checkbox {
+    @apply h-4 w-4 text-desert-600 bg-background-200/50 border border-white/20 rounded focus:ring-desert-600;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold text-desert-500 mb-6;
+  }
+
+  .day-card {
+    @apply glass-card p-6 h-full flex flex-col gap-4;
+  }
+
+  .day-icon {
+    @apply w-12 h-12 bg-desert-500/20 rounded-full flex items-center justify-center text-desert-500;
+  }
+
+  .day-title {
+    @apply text-xl font-semibold text-foreground;
+  }
+
+  .day-description {
+    @apply text-sm text-foreground/80 line-clamp-2;
+  }
+
+  .budget-summary {
+    @apply flex justify-between items-center pt-4 border-t border-white/10 mt-4;
+  }
+
+  .checklist-item {
+    @apply flex items-center gap-3 p-3 bg-background-200/20 rounded-lg hover:bg-background-200/30 transition-colors duration-200;
   }
 
   .fade-in {
-    @apply animate-fade-in;
+    @apply opacity-0 translate-y-4 animate-[fadeInUp_0.6s_ease-out forwards];
   }
-}
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      translate-y: 0;
+    }
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.6s ease-out forwards;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-dark-bg;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-sand/30 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-sand/50;
 }
