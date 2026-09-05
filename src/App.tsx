@@ -1,5 +1,5 @@
 ```tsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Layout from './components/Layout';
 import Hero from './components/Hero';
 import Itinerary from './components/Itinerary';
@@ -10,60 +10,41 @@ import RestaurantRecs from './components/RestaurantRecs';
 import EmergencyContacts from './components/EmergencyContacts';
 import Footer from './components/Footer';
 
-const App: React.FC = () => {
-  const [activeSection, setActiveSection] = useState<string>('hero');
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-
-  const heroRef = useRef<HTMLDivElement>(null);
-  const itineraryRef = useRef<HTMLDivElement>(null);
-  const budgetRef = useRef<HTMLDivElement>(null);
-  const packingRef = useRef<HTMLDivElement>(null);
-  const visaRef = useRef<HTMLDivElement>(null);
-  const restaurantRef = useRef<HTMLDivElement>(null);
-  const emergencyRef = useRef<HTMLDivElement>(null);
-
-  const scrollToSection = (ref: React.RefObject<HTMLDivElement | null>) => {
-    ref.current?.scrollIntoView({ behavior: 'smooth' });
-    setIsMenuOpen(false);
-  };
+const useIntersectionObserver = (options = {}) => {
+  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = [
-        { id: 'hero', ref: heroRef },
-        { id: 'itinerary', ref: itineraryRef },
-        { id: 'budget', ref: budgetRef },
-        { id: 'packing', ref: packingRef },
-        { id: 'visa', ref: visaRef },
-        { id: 'restaurant', ref: restaurantRef },
-        { id: 'emergency', ref: emergencyRef },
-      ];
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        if (section.ref.current) {
-          const rect = section.ref.current.getBoundingClientRect();
-          if (rect.top <= 150) {
-            setActiveSection(section.id);
-            break;
-          }
+    observerRef.current = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setVisibleSections((prev) => new Set([...prev, entry.target.id]));
         }
-      }
-    };
+      });
+    }, { threshold: 0.1, ...options });
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const sections = document.querySelectorAll('[data-animate]');
+    sections.forEach((section) => observerRef.current?.observe(section));
+
+    return () => observerRef.current?.disconnect();
   }, []);
 
-  const navItems = [
-    { id: 'hero', label: 'Home', ref: heroRef },
-    { id: 'itinerary', label: 'Itinerary', ref: itineraryRef },
-    { id: 'budget', label: 'Budget', ref: budgetRef },
-    { id: 'packing', label: 'Packing', ref: packingRef },
-    { id: 'visa', label: 'Visa', ref: visaRef },
-    { id: 'restaurant', label: 'Restaurants', ref: restaurantRef },
-    { id: 'emergency', label: 'Emergency', ref: emergencyRef },
-  ];
+  return visibleSections;
+};
+
+import { useState } from 'react';
+
+const App: React.FC = () => {
+  const [activeSection, setActiveSection] = useState('hero');
+  const visibleSections = useIntersectionObserver();
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setActiveSection(id);
+    }
+  };
 
   return (
     <Layout>
@@ -72,88 +53,72 @@ const App: React.FC = () => {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
               <span className="text-2xl">🏜️</span>
-              <span className="text-lg font-bold bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              <span className="text-xl font-bold bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
                 Dubai Planner
               </span>
             </div>
-
-            {/* Desktop Nav */}
-            <div className="hidden md:flex items-center gap-1">
-              {navItems.map((item) => (
+            <div className="hidden md:flex items-center gap-6">
+              {[
+                { id: 'hero', label: 'Home' },
+                { id: 'itinerary', label: 'Itinerary' },
+                { id: 'budget', label: 'Budget' },
+                { id: 'packing', label: 'Packing' },
+                { id: 'visa', label: 'Visa' },
+                { id: 'restaurants', label: 'Restaurants' },
+                { id: 'emergency', label: 'Emergency' },
+              ].map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => scrollToSection(item.ref as React.RefObject<HTMLDivElement>)}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-                    activeSection === item.id
-                      ? 'bg-amber-500/20 text-amber-300'
-                      : 'text-gray-400 hover:text-amber-300 hover:bg-amber-500/10'
+                  onClick={() => scrollToSection(item.id)}
+                  className={`text-sm font-medium transition-all duration-300 hover:text-amber-400 ${
+                    activeSection === item.id ? 'text-amber-400' : 'text-gray-300'
                   }`}
                 >
                   {item.label}
                 </button>
               ))}
             </div>
-
-            {/* Mobile Menu Button */}
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 rounded-lg text-gray-400 hover:text-amber-300 transition-colors"
+              onClick={() => scrollToSection('hero')}
+              className="px-4 py-2 bg-gradient-to-r from-amber-600 to-orange-600 text-white text-sm font-semibold rounded-lg hover:from-amber-500 hover:to-orange-500 transition-all duration-300 shadow-lg shadow-amber-900/30"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+              Start Planning
             </button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-gray-900/95 backdrop-blur-md border-t border-amber-800/20">
-            <div className="px-4 py-3 space-y-1">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.ref as React.RefObject<HTMLDivElement>)}
-                  className={`block w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-                    activeSection === item.id
-                      ? 'bg-amber-500/20 text-amber-300'
-                      : 'text-gray-400 hover:text-amber-300 hover:bg-amber-500/10'
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
       </nav>
 
-      <div ref={heroRef}>
-        <Hero />
-      </div>
-      <div ref={itineraryRef}>
-        <Itinerary />
-      </div>
-      <div ref={budgetRef}>
-        <BudgetTracker />
-      </div>
-      <div ref={packingRef}>
-        <PackingChecklist />
-      </div>
-      <div ref={visaRef}>
-        <VisaInfo />
-      </div>
-      <div ref={restaurantRef}>
-        <RestaurantRecs />
-      </div>
-      <div ref={emergencyRef}>
-        <EmergencyContacts />
-      </div>
-      <Footer />
+      <main className="pt-16">
+        <section id="hero" data-animate>
+          <Hero />
+        </section>
+
+        <section id="itinerary" data-animate>
+          <Itinerary isVisible={visibleSections.has('itinerary')} />
+        </section>
+
+        <section id="budget" data-animate>
+          <BudgetTracker isVisible={visibleSections.has('budget')} />
+        </section>
+
+        <section id="packing" data-animate>
+          <PackingChecklist isVisible={visibleSections.has('packing')} />
+        </section>
+
+        <section id="visa" data-animate>
+          <VisaInfo isVisible={visibleSections.has('visa')} />
+        </section>
+
+        <section id="restaurants" data-animate>
+          <RestaurantRecs isVisible={visibleSections.has('restaurants')} />
+        </section>
+
+        <section id="emergency" data-animate>
+          <EmergencyContacts isVisible={visibleSections.has('emergency')} />
+        </section>
+
+        <Footer />
+      </main>
     </Layout>
   );
 };
