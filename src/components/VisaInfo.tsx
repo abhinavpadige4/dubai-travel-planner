@@ -1,142 +1,158 @@
-```typescript
-import React, { useState } from 'react'
-
-interface VisaCategory {
-  title: string
-  icon: string
-  description: string
-  details: string[]
-}
-
-const visaCategories: VisaCategory[] = [
-  {
-    title: 'Visa on Arrival',
-    icon: '✈️',
-    description: 'Most nationalities receive a 30-day visa on arrival.',
-    details: [
-      'US, UK, EU, Australian, Canadian citizens',
-      'Valid passport (6+ months)',
-      'Return ticket required',
-      'Free of charge',
-    ],
-  },
-  {
-    title: 'E-Visa Required',
-    icon: '📱',
-    description: 'Some nationalities need to apply for an e-visa before travel.',
-    details: [
-      'Apply through UAE ICA website',
-      'Processing: 3-5 business days',
-      'Fee: ~$50-100 USD',
-      'Valid for 30 or 90 days',
-    ],
-  },
-  {
-    title: 'Visa-Free Entry',
-    icon: '🌍',
-    description: 'GCC citizens and some other nationalities enter without a visa.',
-    details: [
-      'GCC nationals (UAE, Saudi, Kuwait, Qatar, Bahrain, Oman)',
-      'Valid national ID or passport',
-      'No visa fee required',
-      'Unlimited stay',
-    ],
-  },
-]
-
-const tips = [
-  { icon: '📄', text: 'Ensure your passport is valid for at least 6 months from entry date' },
-  { icon: '📸', text: 'Keep digital copies of all travel documents in the cloud' },
-  { icon: '💳', text: 'Carry proof of sufficient funds (bank statements or credit cards)' },
-  { icon: '🏨', text: 'Have hotel booking confirmation readily available' },
-  { icon: '📋', text: 'Check latest requirements on the official UAE ICA website before travel' },
-]
+```tsx
+import React, { useState, useEffect, useRef } from 'react';
 
 const VisaInfo: React.FC = () => {
-  const [expandedCard, setExpandedCard] = useState<number | null>(null)
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const visaTypes = [
+    {
+      title: 'Visa on Arrival',
+      icon: '✈️',
+      description: 'Citizens of the US, UK, EU, Australia, Canada, and many other countries receive a free 30-day visa on arrival.',
+      duration: '30 days',
+      cost: 'Free',
+    },
+    {
+      title: 'Pre-Arrival Visa',
+      icon: '📋',
+      description: 'Some nationalities need to apply for a visa before traveling. Apply through the UAE ICP portal or a UAE-based sponsor.',
+      duration: '30-90 days',
+      cost: 'Varies',
+    },
+    {
+      title: 'Visa Extension',
+      icon: '🔄',
+      description: 'You can extend your visa for an additional 30 days through the General Directorate of Residency and Foreigners Affairs.',
+      duration: '+30 days',
+      cost: 'AED 650',
+    },
+  ];
+
+  const requirements = [
+    'Passport valid for at least 6 months',
+    'Confirmed return ticket',
+    'Hotel booking confirmation',
+    'Proof of sufficient funds',
+    'Travel insurance (recommended)',
+    'Yellow fever vaccination certificate (if applicable)',
+  ];
 
   return (
-    <div className="py-8">
-      {/* Section Header */}
-      <div className="text-center mb-12">
-        <h2 className="section-title gradient-text">Visa Information</h2>
-        <p className="section-subtitle">
-          Everything you need to know about entering the UAE
-        </p>
-        <div className="w-24 h-1 bg-gradient-to-r from-terracotta to-sunset mx-auto rounded-full" />
-      </div>
+    <section ref={sectionRef} className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto">
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium mb-4">
+            🛂 Travel Requirements
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
+              Visa Information
+            </span>
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+            Most nationalities receive a 30-day visa on arrival. Check latest requirements before travel.
+          </p>
+        </div>
 
-      {/* Main Info Card */}
-      <div className="glass-card p-8 mb-8 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-terracotta/10 rounded-full blur-2xl" />
-        <div className="relative z-10">
-          <div className="flex items-start gap-4 mb-4">
-            <span className="text-4xl">🇦🇪</span>
-            <div>
-              <h3 className="text-xl font-bold text-sand-100 mb-2">
-                UAE Entry Requirements
+        {/* Visa Types */}
+        <div
+          className={`grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 transition-all duration-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          {visaTypes.map((visa, index) => (
+            <div
+              key={visa.title}
+              className="group rounded-2xl bg-white/5 border border-amber-500/20 backdrop-blur-sm p-6 hover:border-amber-400/40 hover:bg-white/10 transition-all duration-500 hover:-translate-y-1"
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <div className="text-3xl mb-4">{visa.icon}</div>
+              <h3 className="text-lg font-bold text-gray-100 mb-2 group-hover:text-amber-300 transition-colors">
+                {visa.title}
               </h3>
-              <p className="text-sand-400 leading-relaxed">
-                Most nationalities receive a <strong className="text-sand-200">30-day visa on arrival</strong>. 
-                Check latest requirements before travel. The UAE offers visa-free or visa-on-arrival 
-                access to citizens of over 180 countries.
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">{visa.description}</p>
+              <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-1.5 text-gray-500">
+                  <svg className="w-4 h-4 text-amber-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {visa.duration}
+                </div>
+                <div className="flex items-center gap-1.5 text-gray-500">
+                  <svg className="w-4 h-4 text-amber-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {visa.cost}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Requirements Card */}
+        <div
+          className={`rounded-2xl bg-white/5 border border-amber-500/20 backdrop-blur-sm overflow-hidden transition-all duration-700 delay-300 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="p-6 sm:p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="text-2xl">📝</span>
+              <h3 className="text-xl font-bold text-gray-100">Entry Requirements</h3>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {requirements.map((req, index) => (
+                <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-white/5">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-amber-500/20 flex items-center justify-center">
+                    <svg className="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <span className="text-sm text-gray-300">{req}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Important Note */}
+        <div className="mt-6 p-6 rounded-2xl bg-amber-500/5 border border-amber-500/15">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl flex-shrink-0">⚠️</span>
+            <div>
+              <h4 className="font-semibold text-amber-300 mb-2">Important Note</h4>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                Visa regulations can change. Always verify the latest requirements on the official
+                <a
+                  href="https://icp.gov.ae"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-amber-400 hover:text-amber-300 underline ml-1"
+                >
+                  UAE ICP website
+                </a>
+                before your trip.
               </p>
             </div>
           </div>
         </div>
       </div>
+    </section>
+  );
+};
 
-      {/* Visa Category Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {visaCategories.map((cat, index) => (
-          <div
-            key={index}
-            className="glass-card p-6 cursor-pointer"
-            onClick={() => setExpandedCard(expandedCard === index ? null : index)}
-          >
-            <div className="text-3xl mb-3">{cat.icon}</div>
-            <h3 className="text-lg font-bold text-sand-100 mb-2">{cat.title}</h3>
-            <p className="text-sand-400 text-sm mb-3">{cat.description}</p>
-            <div
-              className={`overflow-hidden transition-all duration-500 ${
-                expandedCard === index ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
-              }`}
-            >
-              <ul className="space-y-2 pt-3 border-t border-desert-border">
-                {cat.details.map((detail, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-sand-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-sunset mt-1.5 flex-shrink-0" />
-                    {detail}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <p className="text-xs text-sand-600 mt-2">
-              {expandedCard === index ? 'Click to collapse' : 'Click for details'}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      {/* Tips Section */}
-      <div className="glass-card p-6">
-        <h3 className="text-lg font-bold text-sand-100 mb-4 flex items-center gap-2">
-          <span>💡</span> Travel Tips
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {tips.map((tip, index) => (
-            <div
-              key={index}
-              className="flex items-start gap-3 p-3 rounded-xl bg-desert-card/50 border border-desert-border/50"
-            >
-              <span className="text-xl flex-shrink-0">{tip.icon}</span>
-              <p className="text-sm text-sand-400 leading-relaxed">{tip.text}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-export default VisaInfo
+export default VisaInfo;
