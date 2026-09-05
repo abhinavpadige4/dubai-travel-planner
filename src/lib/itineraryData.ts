@@ -1,114 +1,82 @@
-import { ItineraryDay } from '../types';
-
-export const itineraryData: ItineraryDay[] = [
+export const itineraryData = [
   {
     id: 1,
+    day: 1,
     title: "Burj Khalifa",
-    description: "Visit the world's tallest building and enjoy breathtaking views from the observation decks on levels 124 and 125.",
+    description: "Visit the world's tallest building and enjoy breathtaking views from the observation deck on the 124th and 125th floors.",
     icon: "🏙️",
-    tips: [
-      "Book tickets in advance to skip the line",
-      "Visit during sunset for the best views",
-      "Allow 2-3 hours for the full experience"
-    ]
+    tips: "Book tickets in advance for sunset views. Wear comfortable shoes as there's considerable walking involved.",
   },
   {
     id: 2,
+    day: 2,
     title: "Desert Safari",
-    description: "Experience an authentic Arabian adventure with dune bashing, camel riding, and a traditional Bedouin camp dinner.",
+    description: "Experience thrilling dune bashing, camel riding, sandboarding, and a traditional Bedouin camp with BBQ dinner and cultural show.",
     icon: "🐪",
-    tips: [
-      "Wear comfortable clothing and closed-toe shoes",
-      "Bring a light jacket for cooler evening temperatures",
-      "Stay hydrated throughout the tour"
-    ]
+    tips: "Wear light, breathable clothing. Bring a scarf for sand protection. Evening safaris offer the best experience.",
   },
   {
     id: 3,
+    day: 3,
     title: "Dubai Marina",
-    description: "Stroll along the picturesque marina walk, admire luxury yachts, and enjoy waterfront dining with stunning skyline views.",
+    description: "Stroll along the picturesque marina walk, admire luxury yachts, and enjoy waterfront dining with skyline views.",
     icon: "⛵",
-    tips: [
-      "Best visited in the evening for beautiful lights",
-      "Try the waterfront cafes for sunset views",
-      "Consider a marina cruise for a different perspective"
-    ]
+    tips: "Visit during sunset for the best photos. Try the marina walk at night when the lights are on.",
   },
   {
     id: 4,
+    day: 4,
     title: "Al Fahidi & Gold Souk",
-    description: "Explore Dubai's historic district with its wind-tower architecture and visit the famous Gold Souk for exquisite jewelry.",
+    description: "Explore the historic Al Fahidi neighborhood with its wind-tower architecture, then visit the famous Gold Souk in Deira.",
     icon: "🕌",
-    tips: [
-      "Visit in the morning to avoid crowds",
-      "Bargain politely in the souks",
-      "Wear modest clothing when visiting religious areas"
-    ]
+    tips: "Best visited in the morning to avoid heat. Haggling is expected in the souks. Wear modest clothing.",
   },
   {
     id: 5,
+    day: 5,
     title: "Palm Jumeirah",
-    description: "Discover the iconic man-made island, visit Atlantis The Palm, and enjoy pristine beaches and luxury resorts.",
+    description: "Visit the iconic palm-shaped island, see Atlantis The Palm, and enjoy beach time or a monorail ride.",
     icon: "🌴",
-    tips: [
-      "Use the monorail for easy transportation",
-      "Visit Atlantis Aquaventure Waterpark if time allows",
-      "Beach access is best at public beaches like The Beach"
-    ]
+    tips: "The monorail offers great views. Public beach access is available at The Beach opposite JBR.",
   },
   {
     id: 6,
+    day: 6,
     title: "Dubai Frame",
     description: "Walk through this architectural landmark that frames old Dubai on one side and modern Dubai on the other.",
     icon: "🖼️",
-    tips: [
-      "Go early to avoid crowds",
-      "The glass walkway offers thrilling views",
-      "Combine with a visit to Zabeel Park"
-    ]
+    tips: "Go early to avoid crowds. The glass floor walkway offers thrilling views downward.",
   },
   {
     id: 7,
-    title: "Abu Dhabi Trip",
-    description: "Take a day trip to the UAE capital to visit the magnificent Sheikh Zayed Grand Mosque and Louvre Abu Dhabi.",
+    day: 7,
+    title: "Abu Dhabi Day Trip",
+    description: "Visit the capital city to see the magnificent Sheikh Zayed Grand Mosque, Louvre Abu Dhabi, and Emirates Palace.",
     icon: "🕌",
-    tips: [
-      "Leave early (around 7 AM) to maximize your day",
-      "Dress modestly for mosque visit (abaya provided if needed)",
-      "Consider a guided tour for historical context"
-    ]
+    tips: "Leave early (around 7 AM) to maximize your day. Dress modestly for mosque visit (scarf and long clothing provided if needed).",
   },
   {
     id: 8,
+    day: 8,
     title: "Ski Dubai",
-    description: "Experience real snow in the desert at this indoor ski resort with penguins, slopes, and snow activities.",
+    description: "Experience real snow in the desert! Ski, snowboard, or just play in the snow at this indoor winter wonderland.",
     icon: "❄️",
-    tips: [
-      "Bring warm socks (gear is provided)",
-      "Allow 3-4 hours for the full experience",
-      "Visit during weekdays to avoid weekend crowds"
-    ]
+    tips: "Bring socks (gloves and jacket provided). Allow 3-4 hours for the full experience. Best on hot days!",
   },
   {
     id: 9,
+    day: 9,
     title: "Creek Dhow Cruise",
-    description: "Enjoy a traditional wooden dhow cruise along Dubai Creek with dinner and views of historic landmarks.",
+    description: "Take a traditional wooden dhow cruise along Dubai Creek, seeing old Dubai's sights with dinner and entertainment.",
     icon: "🚤",
-    tips: [
-      "Choose an evening cruise for dinner and lights",
-      "Try the local Emirati dishes on board",
-      "Great for romantic evenings or family outings"
-    ]
+    tips: "Evening cruises offer the best atmosphere. Try the local cuisine options on board.",
   },
   {
     id: 10,
+    day: 10,
     title: "Bluewaters Island",
-    description: "Visit the home of Ain Dubai, the world's largest observation wheel, with dining, shopping, and beach access.",
+    description: "Visit the newest island destination featuring Ain Dubai (world's largest observation wheel), beaches, and dining.",
     icon: "🎡",
-    tips: [
-      "Best visited in the late afternoon",
-      "Combine with a beach visit",
-      "Check Ain Dubai operating hours before visiting"
-    ]
-  }
+    tips: "Combine with JBR Beach visit. Ain Dubai offers stunning panoramic views - book sunset slots for best photos.",
+  },
 ];
