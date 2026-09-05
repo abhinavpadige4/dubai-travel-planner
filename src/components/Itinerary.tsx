@@ -1,193 +1,202 @@
 ```tsx
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 
-interface DayCard {
+interface DayData {
   day: number;
   title: string;
   icon: string;
   description: string;
   highlights: string[];
   time: string;
+  cost: string;
 }
 
-const itineraryData: DayCard[] = [
+const itineraryData: DayData[] = [
   {
     day: 1,
     title: 'Burj Khalifa',
     icon: '🏗️',
-    description: 'Visit the world\'s tallest building and enjoy breathtaking views from the observation decks on levels 124, 125, and 148.',
-    highlights: ['At the Top (Level 124/125)', 'Burj Khalifa SKY (Level 148)', 'Dubai Mall & Fountain Show'],
+    description: 'Visit the world\'s tallest building and enjoy breathtaking views from the observation decks on levels 124 and 125.',
+    highlights: ['At the Top observation deck', 'Dubai Mall shopping', 'Aquarium visit', 'Dinner at Souk Al Bahar'],
     time: 'Full Day',
+    cost: '$40-80',
   },
   {
     day: 2,
     title: 'Desert Safari',
     icon: '🐪',
-    description: 'Experience the thrill of dune bashing, camel riding, and a traditional Bedouin camp with BBQ dinner and entertainment.',
-    highlights: ['Dune Bashing', 'Camel Riding', 'Sunset Photography', 'BBQ Dinner & Tanoura Dance'],
+    description: 'Experience the thrill of dune bashing, camel riding, and a traditional Bedouin camp under the stars.',
+    highlights: ['Dune bashing adventure', 'Camel riding', 'Sandboarding', 'BBQ dinner & entertainment'],
     time: 'Afternoon & Evening',
+    cost: '$60-120',
   },
   {
     day: 3,
     title: 'Dubai Marina',
     icon: '⛵',
     description: 'Explore the stunning waterfront district with its towering skyscrapers, yacht-lined marinas, and vibrant dining scene.',
-    highlights: ['Marina Walk', 'Dubai Marina Mall', 'Abra Boat Ride', 'Beach Time at JBR'],
+    highlights: ['Marina Walk promenade', 'Dubai Marina Mall', 'Yacht cruise', 'Beach time at JBR'],
     time: 'Full Day',
+    cost: '$30-100',
   },
   {
     day: 4,
     title: 'Al Fahidi & Gold Souk',
     icon: '🕌',
-    description: 'Step back in time at the historic Al Fahidi neighborhood and explore the dazzling Gold Souk with its glittering jewelry shops.',
-    highlights: ['Al Fahidi Historical Neighborhood', 'Gold Souk', 'Spice Souk', 'Abra Ride across Dubai Creek'],
+    description: 'Step back in time at the historic Al Fahidi neighborhood and get lost in the dazzling Gold Souk.',
+    highlights: ['Al Fahidi Historical District', 'Abra boat ride', 'Gold Souk shopping', 'Spice Souk exploration'],
     time: 'Full Day',
+    cost: '$10-30',
   },
   {
     day: 5,
     title: 'Palm Jumeirah',
     icon: '🌴',
-    description: 'Visit the iconic man-made island featuring luxury resorts, world-class restaurants, and the famous Atlantis The Palm.',
-    highlights: ['Atlantis The Palm Aquarium', 'The View at The Palm', 'Lost Chambers Aquarium', 'Beach Club'],
+    description: 'Visit the iconic man-made island featuring luxury resorts, world-class dining, and the Atlantis Aquaventure.',
+    highlights: ['Atlantis Aquaventure', 'The View at The Palm', 'Lost Chambers Aquarium', 'Beach clubs'],
     time: 'Full Day',
+    cost: '$50-150',
   },
   {
     day: 6,
     title: 'Dubai Frame',
     icon: '🖼️',
-    description: 'Get a unique perspective of old and new Dubai from the iconic Dubai Frame, a 150-meter tall rectangular frame structure.',
-    highlights: ['Glass Floor Walkway', 'Panoramic Views', 'Old Dubai Side', 'New Dubai Side'],
+    description: 'Walk through the massive picture frame offering panoramic views of old and new Dubai from its glass-floored bridge.',
+    highlights: ['Glass floor walkway', 'Old Dubai view', 'New Dubai view', 'Zabeel Park nearby'],
     time: 'Half Day',
+    cost: '$15-25',
   },
   {
     day: 7,
-    title: 'Abu Dhabi Trip',
+    title: 'Abu Dhabi Day Trip',
     icon: '🕌',
-    description: 'Take a day trip to the capital city Abu Dhabi to visit the stunning Sheikh Zayed Grand Mosque and other landmarks.',
-    highlights: ['Sheikh Zayed Grand Mosque', 'Louvre Abu Dhabi', 'Emirates Palace', 'Corniche Beach'],
+    description: 'Take a day trip to the capital to visit the magnificent Sheikh Zayed Grand Mosque and Yas Island attractions.',
+    highlights: ['Sheikh Zayed Grand Mosque', 'Yas Island', 'Ferrari World', 'Louvre Abu Dhabi'],
     time: 'Full Day',
+    cost: '$80-200',
   },
   {
     day: 8,
     title: 'Ski Dubai',
     icon: '⛷️',
-    description: 'Experience skiing and snowboarding in the middle of the desert at Ski Dubai inside the Mall of the Emirates.',
-    highlights: ['Ski Slopes', 'Penguin Encounter', 'Snow Park Activities', 'Indoor Skiing'],
+    description: 'Experience skiing and snowboarding in the middle of the desert at the indoor ski resort inside Mall of the Emirates.',
+    highlights: ['Ski slopes', 'Penguin encounter', 'Snow park activities', 'Indoor snow experience'],
     time: 'Half Day',
+    cost: '$50-100',
   },
   {
     day: 9,
     title: 'Creek Dhow Cruise',
     icon: '🚢',
-    description: 'Sail along the historic Dubai Creek on a traditional dhow boat, enjoying dinner and live entertainment.',
-    highlights: ['Traditional Dhow Boat', 'Buffet Dinner', 'Live Entertainment', 'Dubai Skyline Views'],
+    description: 'Sail along the historic Dubai Creek on a traditional wooden dhow while enjoying dinner and live entertainment.',
+    highlights: ['Traditional dhow boat', 'Buffet dinner', 'Live entertainment', 'Creek skyline views'],
     time: 'Evening',
+    cost: '$40-80',
   },
   {
     day: 10,
     title: 'Bluewaters Island',
     icon: '🎡',
-    description: 'End your trip at Bluewaters Island, home to the iconic Ain Dubai observation wheel and numerous dining options.',
-    highlights: ['Ain Dubai (Dubai Eye)', 'Beach Activities', 'Dining & Shopping', 'Sunset Views'],
+    description: 'End your trip at Bluewaters Island, home to the iconic Ain Dubai observation wheel and beachfront dining.',
+    highlights: ['Ain Dubai observation wheel', 'Beach activities', 'Dining options', 'Sunset views'],
     time: 'Full Day',
+    cost: '$30-80',
   },
 ];
 
-const Itinerary: React.FC = () => {
-  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
-  const sectionRef = useRef<HTMLDivElement>(null);
+interface ItineraryProps {
+  isVisible: boolean;
+}
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = parseInt(entry.target.getAttribute('data-index') || '0');
-            setVisibleCards((prev) => new Set([...prev, index]));
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
-
-    const cards = sectionRef.current?.querySelectorAll('[data-card]');
-    cards?.forEach((card) => observer.observe(card));
-
-    return () => observer.disconnect();
-  }, []);
+const Itinerary: React.FC<ItineraryProps> = ({ isVisible }) => {
+  const [expandedDay, setExpandedDay] = useState<number | null>(null);
 
   return (
-    <section data-section="itinerary" ref={sectionRef} className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+    <section className="py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium mb-4">
+        <div className={`text-center mb-16 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+          <span className="inline-block px-4 py-2 glass-card rounded-full text-amber-400 text-sm font-medium mb-4">
             📅 Your Journey
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
-              10-Day Itinerary
-            </span>
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
+            <span className="gradient-text">10-Day Itinerary</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            A carefully curated day-by-day plan covering Dubai\'s most iconic attractions and hidden gems.
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            A carefully curated day-by-day guide to experiencing the best of Dubai
           </p>
         </div>
 
         {/* Day Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {itineraryData.map((day, index) => (
             <div
               key={day.day}
-              data-card
-              data-index={index}
-              className={`group relative rounded-2xl bg-white/5 border border-amber-500/20 backdrop-blur-sm overflow-hidden transition-all duration-700 hover:border-amber-400/40 hover:bg-white/10 hover:shadow-lg hover:shadow-amber-500/10 hover:-translate-y-1 ${
-                visibleCards.has(index) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              className={`glass-card glass-card-hover rounded-2xl p-6 cursor-pointer transition-all duration-500 ${
+                isVisible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-              style={{ transitionDelay: `${index * 80}ms` }}
+              style={{ animationDelay: `${index * 100}ms` }}
+              onClick={() => setExpandedDay(expandedDay === day.day ? null : day.day)}
             >
-              {/* Day Badge */}
-              <div className="absolute top-4 right-4 w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-gray-900 font-bold text-sm shadow-lg">
-                {day.day}
+              {/* Day Header */}
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-amber-900/30">
+                    {day.day}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">{day.title}</h3>
+                    <span className="text-amber-400/70 text-sm">{day.time}</span>
+                  </div>
+                </div>
+                <span className="text-3xl">{day.icon}</span>
               </div>
 
-              <div className="p-6">
-                {/* Icon */}
-                <div className="text-4xl mb-4">{day.icon}</div>
+              {/* Description */}
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                {day.description}
+              </p>
 
-                {/* Title */}
-                <h3 className="text-xl font-bold text-gray-100 mb-2 group-hover:text-amber-300 transition-colors">
-                  {day.title}
-                </h3>
+              {/* Cost Badge */}
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs text-gray-500">Estimated Cost</span>
+                <span className="px-3 py-1 bg-amber-900/30 text-amber-400 text-sm font-semibold rounded-full border border-amber-700/30">
+                  {day.cost}
+                </span>
+              </div>
 
-                {/* Time */}
-                <div className="flex items-center gap-1.5 text-sm text-amber-400/70 mb-3">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {day.time}
-                </div>
-
-                {/* Description */}
-                <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  {day.description}
-                </p>
-
-                {/* Highlights */}
-                <div className="space-y-2">
-                  {day.highlights.map((highlight) => (
-                    <div key={highlight} className="flex items-center gap-2 text-sm text-gray-500">
-                      <svg className="w-4 h-4 text-amber-500/60 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      {highlight}
-                    </div>
-                  ))}
+              {/* Expandable Highlights */}
+              <div
+                className={`overflow-hidden transition-all duration-500 ${
+                  expandedDay === day.day ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'
+                }`}
+              >
+                <div className="pt-3 border-t border-amber-800/20">
+                  <h4 className="text-amber-400 text-sm font-semibold mb-2">✨ Highlights</h4>
+                  <ul className="space-y-2">
+                    {day.highlights.map((highlight, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm text-gray-400">
+                        <span className="w-1.5 h-1.5 bg-amber-500 rounded-full flex-shrink-0" />
+                        {highlight}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
 
-              {/* Bottom accent line */}
-              <div className="h-1 bg-gradient-to-r from-amber-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* Expand indicator */}
+              <div className="flex items-center justify-center mt-3">
+                <svg
+                  className={`w-5 h-5 text-amber-500/50 transition-transform duration-300 ${
+                    expandedDay === day.day ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
             </div>
           ))}
         </div>
