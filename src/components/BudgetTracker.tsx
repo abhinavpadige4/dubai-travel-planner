@@ -1,3 +1,4 @@
+import React,tsx
 import React, { useState } from 'react';
 
 interface Expense {
@@ -28,92 +29,99 @@ const BudgetTracker: React.FC = () => {
     };
 
     setExpenses([...expenses, newExpense]);
+    setRemainingBudget(prev => prev - parseFloat(amount));
     setDescription('');
     setAmount('');
     setCategory('Food');
-    setRemainingBudget(remainingBudget - parseFloat(amount));
   };
 
   const totalSpent = expenses.reduce((sum, exp) => sum + exp.amount, 0);
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white">Budget Tracker</h2>
-      <form onSubmit={handleAddExpense} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-        <div className="grid gap-4 md:grid-cols-2">
+    <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 rounded-xl p-6">
+      <h2 className="text-2xl font-bold text-white mb-6">Budget Tracker</h2>
+      
+      <form onSubmit={handleAddExpense} className="space-y-4 mb-6">
+        <div className="grid gap-3 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-white/80 mb-1">Description</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
             <input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-d4a373"
-              placeholder="e.g., Burj Khalifa tickets"
+              placeholder="e.g., Dinner at Al Mallah"
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-d4a373"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-white/80 mb-1">Amount (AED)</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Amount (AED)</label>
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-d4a373"
               min="0"
               step="0.01"
+              placeholder="e.g., 120.50"
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-d4a373"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-white/80 mb-1">Category</label>
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium text-gray-300 mb-1">Category</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-d4a373"
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-d4a373"
             >
-              {categories.map((cat) => (
+              {categories.map(cat => (
                 <option key={cat} value={cat}>
                   {cat}
                 </option>
               ))}
             </select>
           </div>
-          <div className="md:col-span-2 flex justify-end">
-            <button
-              type="submit"
-              className="bg-d4a373 hover:bg-d4a373/90 text-white font-medium px-5 py-2 rounded-lg transition-transform duration-200 hover:scale-105"
-            >
-              Add Expense
-            </button>
-          </div>
         </div>
+        <button
+          type="submit"
+          className="w-full bg-d4a373 text-white font-bold py-3 px-6 rounded-lg hover:bg-d4a373/90 transition-colors duration-200 transform hover:scale-[1.02]"
+        >
+          Add Expense
+        </button>
       </form>
 
-      <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-        <div className="flex justify-between items-center mb-4">
-          <span className="text-lg font-semibold text-white">Summary</span>
-          <span className="text-d4a373 font-bold">
-            Total Spent: {totalSpent.toFixed(2)} AED | Remaining Budget: {remainingBudget.toFixed(2)} AED
+      <div className="space-y-4">
+        <div className="flex justify-between items-center text-lg font-semibold text-white">
+          <span>Total Spent:</span>
+          <span>{totalSpent.toFixed(2)} AED</span>
+        </div>
+        <div className="flex justify-between items-center text-lg font-semibold text-white">
+          <span>Remaining Budget:</span>
+          <span className={remainingBudget < 0 ? 'text-red-400' : 'text-green-400'}>
+            {remainingBudget.toFixed(2)} AED
           </span>
         </div>
-        {expenses.length > 0 ? (
-          <ul className="space-y-3">
+        <div className="h-0.5 bg-gray-700 my-4"></div>
+        {expenses.length > 0 && (
+          <div className="space-y-3">
+            <h3 className="text-lg font-semibold text-white mb-3">Recent Expenses</h3>
             {expenses
               .slice()
-              .sort((a, b) => b.id - a.id)
+              .reverse()
+              .slice(0, 5)
               .map((exp) => (
-                <li
+                <div
                   key={exp.id}
-                  className="flex justify-between items-center p-3 bg-white/5 rounded-lg"
+                  className="flex justify-between items-center p-3 bg-gray-800/50 rounded-lg"
                 >
                   <div>
                     <span className="font-medium text-white">{exp.description}</span>
-                    <span className="block text-sm text-white/60">{exp.category}</span>
+                    <span className="text-sm text-gray-400 ml-2">{exp.category}</span>
                   </div>
-                  <span className="text-d4a373 font-medium">{exp.amount.toFixed(2)} AED</span>
-                </li>
+                  <span className="text-lg font-semibold text-d4a373">
+                    {exp.amount.toFixed(2)} AED
+                  </span>
+                </div>
               ))}
-          </ul>
-        ) : (
-          <p className="text-white/60 text-center py-4">No expenses added yet.</p>
+          </div>
         )}
       </div>
     </div>
