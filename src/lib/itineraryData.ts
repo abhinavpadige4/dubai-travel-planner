@@ -6,128 +6,109 @@ export const itineraryData: ItineraryDay[] = [
     title: "Burj Khalifa",
     description: "Visit the world's tallest building and enjoy breathtaking views from the observation decks on levels 124 and 125.",
     icon: "🏙️",
-    highlights: [
-      "At the Top observation deck",
-      "Sky lounge access",
-      "Dubai Fountain views",
-      "Interactive exhibits"
+    tips: [
+      "Book tickets in advance to skip the line",
+      "Visit during sunset for the best views",
+      "Allow 2-3 hours for the full experience"
     ]
   },
   {
     id: 2,
     title: "Desert Safari",
-    description: "Experience an authentic Arabian desert adventure with dune bashing, camel riding, and traditional entertainment under the stars.",
+    description: "Experience an authentic Arabian adventure with dune bashing, camel riding, and a traditional Bedouin camp dinner.",
     icon: "🐪",
-    highlights: [
-      "Dune bashing in 4x4",
-      "Camel riding",
-      "Sandboarding",
-      "Bedouin camp dinner",
-      "Belly dancing & Tanoura show"
+    tips: [
+      "Wear comfortable clothing and closed-toe shoes",
+      "Bring a light jacket for cooler evening temperatures",
+      "Stay hydrated throughout the tour"
     ]
   },
   {
     id: 3,
     title: "Dubai Marina",
-    description: "Explore the stunning waterfront district with luxury yachts, skyscrapers, and vibrant promenades perfect for dining and leisure.",
+    description: "Stroll along the picturesque marina walk, admire luxury yachts, and enjoy waterfront dining with stunning skyline views.",
     icon: "⛵",
-    highlights: [
-      "Marina Walk",
-      "Yacht viewing",
-      "Dubai Marina Mall",
-      "JBR Beach access",
-      "Sunset views"
+    tips: [
+      "Best visited in the evening for beautiful lights",
+      "Try the waterfront cafes for sunset views",
+      "Consider a marina cruise for a different perspective"
     ]
   },
   {
     id: 4,
     title: "Al Fahidi & Gold Souk",
-    description: "Step into Old Dubai with historic wind-tower architecture and explore the legendary Gold Souk with its dazzling jewelry displays.",
+    description: "Explore Dubai's historic district with its wind-tower architecture and visit the famous Gold Souk for exquisite jewelry.",
     icon: "🕌",
-    highlights: [
-      "Al Fahidi Historical District",
-      "Dubai Museum",
-      "Textile Souk",
-      "Gold Souk",
-      "Spice Souk"
+    tips: [
+      "Visit in the morning to avoid crowds",
+      "Bargain politely in the souks",
+      "Wear modest clothing when visiting religious areas"
     ]
   },
   {
     id: 5,
     title: "Palm Jumeirah",
-    description: "Discover the iconic man-made palm-shaped island featuring luxury resorts, pristine beaches, and the Atlantis Aquaventure Waterpark.",
+    description: "Discover the iconic man-made island, visit Atlantis The Palm, and enjoy pristine beaches and luxury resorts.",
     icon: "🌴",
-    highlights: [
-      "Atlantis, The Palm",
-      "Aquaventure Waterpark",
-      "The Pointe",
-      "Nakheel Mall",
-      "Beach access"
+    tips: [
+      "Use the monorail for easy transportation",
+      "Visit Atlantis Aquaventure Waterpark if time allows",
+      "Beach access is best at public beaches like The Beach"
     ]
   },
   {
     id: 6,
     title: "Dubai Frame",
-    description: "Visit this architectural landmark that 'frames' old and new Dubai, offering panoramic views from its sky-deck and glass walkway.",
+    description: "Walk through this architectural landmark that frames old Dubai on one side and modern Dubai on the other.",
     icon: "🖼️",
-    highlights: [
-      "Sky-deck views",
-      "Glass walkway",
-      "Old Dubai gallery",
-      "New Dubai gallery",
-      "Multimedia presentation"
+    tips: [
+      "Go early to avoid crowds",
+      "The glass walkway offers thrilling views",
+      "Combine with a visit to Zabeel Park"
     ]
   },
   {
     id: 7,
     title: "Abu Dhabi Trip",
-    description: "Take a day trip to the UAE capital to visit the magnificent Sheikh Zayed Grand Mosque, Louvre Abu Dhabi, and Yas Island attractions.",
+    description: "Take a day trip to the UAE capital to visit the magnificent Sheikh Zayed Grand Mosque and Louvre Abu Dhabi.",
     icon: "🕌",
-    highlights: [
-      "Sheikh Zayed Grand Mosque",
-      "Louvre Abu Dhabi",
-      "Yas Island (Ferrari World)",
-      "Emirates Palace",
-      "Corniche Beach"
+    tips: [
+      "Leave early (around 7 AM) to maximize your day",
+      "Dress modestly for mosque visit (abaya provided if needed)",
+      "Consider a guided tour for historical context"
     ]
   },
   {
     id: 8,
     title: "Ski Dubai",
-    description: "Escape the desert heat and enjoy real snow activities including skiing, snowboarding, and penguin encounters at this indoor ski resort.",
+    description: "Experience real snow in the desert at this indoor ski resort with penguins, slopes, and snow activities.",
     icon: "❄️",
-    highlights: [
-      "Ski slopes",
-      "Snowboarding",
-      "Penguin encounter",
-      "Snow park",
-      "Chairlift ride"
+    tips: [
+      "Bring warm socks (gear is provided)",
+      "Allow 3-4 hours for the full experience",
+      "Visit during weekdays to avoid weekend crowds"
     ]
   },
   {
     id: 9,
     title: "Creek Dhow Cruise",
-    description: "Glide along Dubai Creek aboard a traditional wooden dhow, enjoying dinner and views of historic districts illuminated at night.",
+    description: "Enjoy a traditional wooden dhow cruise along Dubai Creek with dinner and views of historic landmarks.",
     icon: "🚤",
-    highlights: [
-      "Traditional dhow cruise",
-      "Buffet dinner",
-      "Live entertainment",
-      "Creek views",
-      "Heritage sites"
+    tips: [
+      "Choose an evening cruise for dinner and lights",
+      "Try the local Emirati dishes on board",
+      "Great for romantic evenings or family outings"
     ]
   },
   {
     id: 10,
     title: "Bluewaters Island",
-    description: "Visit the vibrant island home to Ain Dubai (the world's largest observation wheel), beachfront dining, and premium retail outlets.",
+    description: "Visit the home of Ain Dubai, the world's largest observation wheel, with dining, shopping, and beach access.",
     icon: "🎡",
-    highlights: [
-      "Ain Dubai observation wheel",
-      "Beachfront promenade",
-      "Caesars Palace",
-      "Retail outlets",
-      "Dining options"
+    tips: [
+      "Best visited in the late afternoon",
+      "Combine with a beach visit",
+      "Check Ain Dubai operating hours before visiting"
     ]
   }
 ];
