@@ -7,86 +7,49 @@
     --background: #111827;
     --foreground: #ffffff;
     --card-bg: #1f2937;
-    --input-bg: #374151;
-    --accent-purple: #a855f7;
-    --accent-teal: #10b981;
+    --card-bg-light: #374151;
+    --accent: #a855f7;
+    --success: #10b981;
     --desert-sand: #d4a373;
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-blur: blur(8px);
   }
 
   body {
-    @apply bg-dark-bg text-white font-sans antialiased;
+    @apply bg-desert-dark text-white;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold tracking-tight;
   }
 
-  h1 {
-    @apply text-3xl md:text-4xl lg:text-5xl;
-  }
-
-  h2 {
-    @apply text-2xl md:text-3xl;
-  }
-
-  h3 {
-    @apply text-xl md:text-2xl;
-  }
-
-  p {
-    @aply text-gray-300;
-  }
-}
-
-@layer components {
   .glass-card {
-    @apply bg-card-bg/80 backdrop-blur-glass border border-glass-border rounded-xl shadow-glass hover:shadow-2xl transition-all duration-300;
+    @apply bg-card-bg/80 backdrop-blur-lg border border-white/20 shadow-glass hover:shadow-xl transition-all duration-300;
   }
 
-  .glass-card:hover {
-    @apply transform scale-[1.02];
+  .glass-card-light {
+    @apply bg-card-bg-light/80 backdrop-blur-lg border border-white/20 shadow-card hover:shadow-xl transition-all duration-300;
   }
 
   .btn-primary {
-    @apply bg-accent-purple text-white font-medium px-6 py-3 rounded-lg hover:bg-purple-600 transition-colors duration-300 shadow-md hover:shadow-lg;
+    @apply bg-accent text-white font-medium py-2 px-4 rounded-lg hover:bg-accent/90 transition-colors duration-200 transform hover:scale-[1.02];
   }
 
-  .btn-secondary {
-    @apply bg-accent-teal text-white font-medium px-6 py-3 rounded-lg hover:bg-teal-600 transition-colors duration-300 shadow-md hover:shadow-lg;
+  .btn-success {
+    @apply bg-success text-white font-medium py-2 px-4 rounded-lg hover:bg-success/90 transition-colors duration-200 transform hover:scale-[1.02];
   }
 
   .input-field {
-    @apply w-full bg-input-bg/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-purple focus:border-transparent transition-all duration-300 placeholder-gray-400;
+    @apply w-full px-4 py-3 bg-card-bg-light/80 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-200;
   }
 
   .select-field {
-    @apply w-full bg-input-bg/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-purple focus:border-transparent transition-all duration-300 appearance-none bg-[url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23ffffff"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>')] bg-right-2.5 bg-center no-repeat bg-contain [background-size:1.5em];
+    @apply w-full px-4 py-3 bg-card-bg-light/80 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-200 appearance-none bg-[url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23FFFFFF"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>')] bg-right-2.5 bg-center no-repeat bg-contain [background-size:1.5em];
   }
 
-  .day-card {
-    @apply glass-card p-6 h-full flex flex-col gap-4 hover:scale-[1.02] transition-transform duration-300 cursor-pointer;
-  }
-
-  .day-icon {
-    @apply w-12 h-12 bg-desert-sand/20 rounded-full flex items-center justify-center text-desert-sand flex-shrink-0;
-  }
-
-  .checklist-item {
-    @apply flex items-center gap-3 p-3 bg-input-bg/50 rounded-lg hover:bg-input-bg/70 transition-colors duration-200;
-  }
-
-  .checklist-item input[type="checkbox"] {
-    @apply w-4 h-4 text-accent-purple border-gray-600 rounded focus:ring-accent-purple;
-  }
-
-  .expense-form {
-    @apply space-y-4;
-  }
-
-  .expense-summary {
-    @apply bg-input-bg/50 p-4 rounded-lg border border-gray-600 mt-6;
+  .checkbox {
+    @apply h-4 w-4 text-accent border-white/20 rounded focus:ring-accent;
   }
 
   .fade-in {
@@ -96,18 +59,60 @@
   .fade-in.visible {
     @apply opacity-100 translate-y-0;
   }
-}
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg;
   }
-}
 
-* {
-  @apply select-none;
-}
+  .icon-accent {
+    @apply text-desert-sand flex-shrink-0 h-6 w-6;
+  }
 
-input, textarea, select, button, a[href] {
-  @apply select-text;
+  .section-heading {
+    @apply text-2xl font-bold mb-6 text-white;
+  }
+
+  .day-card {
+    @apply glass-card p-6 hover-lift cursor-pointer transition-all duration-300;
+  }
+
+  .day-card:hover {
+    @apply transform scale-[1.02];
+  }
+
+  .budget-form {
+    @apply glass-card-light p-6 space-y-4;
+  }
+
+  .packing-item {
+    @apply flex items-center p-3 bg-card-bg-light/50 rounded-lg hover:bg-card-bg-light/70 transition-colors duration-200;
+  }
+
+  .packing-item:hover {
+    @apply bg-card-bg-light/70;
+  }
+
+  .restaurant-card {
+    @apply glass-card p-4 h-full hover-lift transition-all duration-300;
+  }
+
+  .restaurant-card:hover {
+    @apply transform scale-[1.02];
+  }
+
+  .nav-link {
+    @apply text-white/80 hover:text-white px-3 py-2 rounded-md transition-colors duration-200 hover:bg-white/10;
+  }
+
+  .nav-link.active {
+    @apply text-white bg-white/20;
+  }
+
+  .animate-on-scroll {
+    @apply opacity-0 translate-y-4;
+  }
+
+  .animate-on-scroll.visible {
+    @apply opacity-100 translate-y-0 transition-all duration-800 ease-out;
+  }
 }
