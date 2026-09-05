@@ -6,44 +6,108 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
   }
 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-  }
-
-  body {
-    @apply bg-background text-foreground;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 212.7 26.8% 17.6%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 212.7 26.8% 17.6%;
+    --muted-foreground: 210 40% 98%;
+    --accent: 212.7 26.8% 17.6%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 212.7 26.8% 17.6%;
+    --input: 212.7 26.8% 17.6%;
+    --ring: 212.7 26.8% 17.6%;
+    --radius: 0.5rem;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-dark-card/70 backdrop-blur-sm border border-sand/20 rounded-xl shadow-glass transition-all duration-300 hover:shadow-lg hover:border-sand/40;
+    @apply bg-dark-card/70 backdrop-blur-sm border border-glass-border rounded-xl shadow-glass;
   }
 
-  .btn-primary {
-    @apply bg-terracotta hover:bg-sunset text-white font-medium py-2 px-6 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg;
+  .sand-accent {
+    @apply border-sand/50 bg-gradient-to-br from-terracotta/10 to-sunset/5;
   }
 
-  .input-field {
-    @apply w-full px-4 py-3 bg-dark-card/50 border border-sand/20 rounded-lg text-white placeholder-sand/50 focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-sand/40 transition-all duration-300;
+  .terracotta-text {
+    @apply text-terracotta;
   }
 
-  .checkbox-custom {
-    @apply w-4 h-4 border border-sand/40 rounded bg-dark-card/50 text-terracotta focus:ring-2 focus:ring-terracotta focus:border-terracotta transition-all duration-300;
+  .sunset-text {
+    @apply text-sunset;
   }
 
-  .section-title {
-    @apply text-2xl font-bold mb-6 text-sand;
+  .sand-text {
+    @apply text-sand;
   }
 
-  .day-card {
-    @apply glass-card p-6 h-full border-sand/30;
+  .dark-bg {
+    @apply bg-dark-bg;
   }
 
-  .day-icon {
-    @apply w-10 h-10 bg-terracotta/20 rounded-full flex items-center justify-center mb-4;
+  .fade-in {
+    @apply animate-fade-in;
   }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-bg;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-sand/30 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-sand/50;
 }
