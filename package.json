@@ -1,7 +1,7 @@
 {
   "name": "dubai-travel-planner",
   "version": "1.0.0",
-  "description": "A 10-day Dubai travel planner web app with budget tracker, packing checklist, and more",
+  "description": "A 10-day Dubai travel planner web app with itinerary, budget tracker, packing checklist, and more",
   "main": "index.html",
   "scripts": {
     "dev": "vite",
@@ -19,7 +19,7 @@
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.24",
     "tailwindcss": "^3.3.2",
-    "typescript": "^5.0.0",
+    "typescript": "^5.0.2",
     "vite": "^4.4.0"
   }
 }
