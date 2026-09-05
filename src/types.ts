@@ -1,20 +1,24 @@
-export interface ItineraryDay {
+export interface ItineraryItem {
   id: number;
+  day: number;
   title: string;
   description: string;
   icon: string;
-  tips?: string[];
+  tips: string;
 }
 
-export interface BudgetCategory {
-  name: string;
-  amount: number;
+export interface BudgetFormValues {
+  transport: number;
+  accommodation: number;
+  food: number;
+  activities: number;
+  miscellaneous: number;
 }
 
 export interface PackingItem {
   id: number;
-  item: string;
-  checked: boolean;
+  name: string;
+  packed: boolean;
 }
 
 export interface Restaurant {
@@ -23,16 +27,11 @@ export interface Restaurant {
   cuisine: string;
   rating: number;
   description: string;
-  priceRange: string;
 }
 
 export interface EmergencyContact {
+  id: number;
   name: string;
   number: string;
-}
-
-export interface VisaInfo {
-  title: string;
-  content: string;
-  note: string;
+  description?: string;
 }
