@@ -1,8 +1,8 @@
 {
-  "name": "dubai-10-day-travel-planner",
+  "name": "dubai-travel-planner",
   "version": "1.0.0",
-  "description": "A 10-day Dubai travel planner web app with itinerary, budget tracker, packing checklist, and more",
-  "main": "index.html",
+  "description": "A 10-day Dubai travel planner with budget tracker, packing checklist, and local tips",
+  "main": "src/main.tsx",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
