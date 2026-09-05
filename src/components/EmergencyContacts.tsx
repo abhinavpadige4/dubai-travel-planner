@@ -6,7 +6,7 @@ const EmergencyContacts: React.FC = () => {
     { label: 'Ambulance', number: '998' },
     { label: 'Fire', number: '997' },
     { label: 'Dubai Tourism Hotline', number: '800 555' },
-    { label: 'Your Country Embassy', number: 'Check local directory' }
+    { label: 'Your Country Embassy', number: 'Check local listing' }
   ];
 
   return (
@@ -14,7 +14,7 @@ const EmergencyContacts: React.FC = () => {
       <h2 className="text-2xl font-bold text-white mb-4">Emergency Contacts</h2>
       <div className="space-y-3">
         {contacts.map((contact, index) => (
-          <div key={index} className="flex justify-between items-center bg-white/10 border border-white/20 rounded-lg p-4 hover:bg-white/15 transition-colors duration-300">
+          <div key={index} className="flex justify-between items-center bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
             <span className="text-white font-medium">{contact.label}</span>
             <span className="text-gray-300">{contact.number}</span>
           </div>
