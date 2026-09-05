@@ -1,58 +1,125 @@
+```css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-dark-500 text-sand-100;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-400;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-sand-700 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-sand-600;
+  }
+
+  ::selection {
+    @apply bg-terracotta-500/30 text-sand-50;
+  }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+@layer components {
+  .glass-card {
+    @apply bg-dark-200/60 backdrop-blur-md border border-sand-400/20 rounded-2xl shadow-glass;
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:bg-dark-200/80 hover:border-sand-400/40 hover:shadow-sand hover:-translate-y-1;
+  }
+
+  .sand-gradient-text {
+    @apply bg-gradient-to-r from-sand-300 via-sand-400 to-sand-300 bg-clip-text text-transparent;
+  }
+
+  .terracotta-gradient-text {
+    @apply bg-gradient-to-r from-terracotta-400 via-sunset-400 to-terracotta-400 bg-clip-text text-transparent;
+  }
+
+  .btn-primary {
+    @apply px-8 py-3 rounded-xl font-semibold text-dark-500 bg-gradient-to-r from-terracotta-500 to-sunset-500 hover:from-terracotta-400 hover:to-sunset-400 transition-all duration-300 shadow-terracotta hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply px-8 py-3 rounded-xl font-semibold border-2 border-sand-400/40 text-sand-300 hover:bg-sand-400/10 hover:border-sand-400/60 transition-all duration-300;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold sand-gradient-text mb-2;
+  }
+
+  .section-subtitle {
+    @apply text-sand-400/70 text-lg mb-8;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl bg-dark-300/80 border border-sand-400/20 text-sand-100 placeholder-sand-600 focus:outline-none focus:border-sand-400/50 focus:ring-2 focus:ring-sand-400/20 transition-all duration-300;
+  }
+
+  .day-card {
+    @apply glass-card-hover p-6 flex flex-col gap-3;
+  }
+
+  .check-item {
+    @apply flex items-center gap-3 p-3 rounded-xl transition-all duration-200 hover:bg-dark-200/40 cursor-pointer;
+  }
+
+  .check-item.checked {
+    @apply bg-sand-400/10;
+  }
+
+  .check-box {
+    @apply w-5 h-5 rounded-md border-2 border-sand-500/40 flex items-center justify-center transition-all duration-200 flex-shrink-0;
+  }
+
+  .check-box.checked {
+    @apply bg-sand-400 border-sand-400;
+  }
+
+  .restaurant-card {
+    @apply glass-card-hover p-5 flex flex-col gap-2;
+  }
+
+  .contact-item {
+    @apply flex items-center justify-between p-4 rounded-xl bg-dark-300/40 border border-sand-400/10 hover:border-sand-400/30 transition-all duration-200;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: #0f172a; 
-}
+@layer utilities {
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: #334155; 
-  border-radius: 4px;
-}
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #f59e0b; 
-}
-
-/* Leaflet Popup Customization */
-.leaflet-popup-content-wrapper {
-  background: #1e293b;
-  color: #f8fafc;
-  border-radius: 0.5rem;
-  border: 1px solid #f59e0b;
-}
-
-.leaflet-popup-tip {
-  background: #1e293b;
-}
-
-.leaflet-popup-content {
-  margin: 10px;
-  font-family: 'Inter', sans-serif;
-}
-
-.glass-card {
-  @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-lg;
-}
-
-.btn-primary {
-  @apply bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300;
-}
-
-.section-title {
-  @apply text-3xl md:text-4xl font-bold text-white mb-8 text-center;
-}
-
-.amber-text {
-  @apply text-amber-500;
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+  .stagger-4 { transition-delay: 0.4s; }
+  .stagger-5 { transition-delay: 0.5s; }
+  .stagger-6 { transition-delay: 0.6s; }
+  .stagger-7 { transition-delay: 0.7s; }
+  .stagger-8 { transition-delay: 0.8s; }
+  .stagger-9 { transition-delay: 0.9s; }
+  .stagger-10 { transition-delay: 1.0s; }
 }
