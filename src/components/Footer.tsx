@@ -1,27 +1,14 @@
-import React from 'react';
-
-const Footer: React.FC = () => {
+export const Footer = () => {
   return (
-    <footer className="bg-gray-900/80 backdrop-blur-sm border-t border-sand/20 py-8 mt-12">
-      <div className="max-w-4xl mx-auto px-6 text-center">
-        <p className="text-sm text-sand/60">
-          © 2026 Dubai Travel Planner
-        </p>
-        <div className="mt-4 flex justify-center space-x-6">
-          <a href="/about" className="text-sm text-sand/40 hover:text-terracotta transition-colors duration-300">
-            About
-          </a>
-          <a href="/privacy" className="text-sm text-sand/40 hover:text-terracotta transition-colors duration-300">
-            Privacy
-          </a>
-          <a href="/contact" className="text-sm text-sand/40 hover:text-terracotta transition-colors duration-300">
-            Contact
-          </a>
+    <footer className="py-12 fade-in">
+      <div className="max-w-4xl mx-auto text-center px-4">
+        <p className="text-gray-500">© 2026 Dubai Travel Planner</p>
+        <div className="mt-4 space-x-6">
+          <a href="#" className="text-gray-400 hover:text-sand-primary transition-colors duration-200">About</a>
+          <a href="#" className="text-gray-400 hover:text-sand-primary transition-colors duration-200">Privacy</a>
+          <a href="#" className="text-gray-400 hover:text-sand-primary transition-colors duration-200">Contact</a>
         </div>
       </div>
     </footer>
   );
 };
-
-export default Footer;
-</path>
