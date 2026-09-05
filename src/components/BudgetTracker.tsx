@@ -1,242 +1,122 @@
-```tsx
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 
-interface BudgetCategory {
-  id: string;
-  label: string;
-  icon: string;
-  value: number;
-  suggestedMin: number;
-  suggestedMax: number;
-  tips: string;
+interface Expense {
+  id: number;
+  description: string;
+  amount: number;
+  category: string;
 }
 
-interface BudgetTrackerProps {
-  isVisible: boolean;
-}
+const BudgetTracker: React.FC = () => {
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [description, setDescription] = useState('');
+  const [amount, setAmount] = useState('');
+  const [category, setCategory] = useState('Food');
+  const [remainingBudget, setRemainingBudget] = useState(5000);
 
-const BudgetTracker: React.FC<BudgetTrackerProps> = ({ isVisible }) => {
-  const [budget, setBudget] = useState<BudgetCategory[]>([
-    {
-      id: 'transport',
-      label: 'Transport',
-      icon: '🚗',
-      value: 0,
-      suggestedMin: 100,
-      suggestedMax: 300,
-      tips: 'Metro, taxis, and occasional car rentals',
-    },
-    {
-      id: 'accommodation',
-      label: 'Accommodation',
-      icon: '🏨',
-      value: 0,
-      suggestedMin: 500,
-      suggestedMax: 2000,
-      tips: '9 nights × average nightly rate',
-    },
-    {
-      id: 'food',
-      label: 'Food & Dining',
-      icon: '🍽️',
-      value: 0,
-      suggestedMin: 200,
-      suggestedMax: 600,
-      tips: 'Mix of casual and fine dining',
-    },
-    {
-      id: 'activities',
-      label: 'Activities & Tours',
-      icon: '🎯',
-      value: 0,
-      suggestedMin: 300,
-      suggestedMax: 800,
-      tips: 'Attractions, safaris, cruises, etc.',
-    },
-    {
-      id: 'misc',
-      label: 'Miscellaneous',
-      icon: '🛍️',
-      value: 0,
-      suggestedMin: 100,
-      suggestedMax: 500,
-      tips: 'Shopping, souvenirs, tips, extras',
-    },
-  ]);
+  const categories = ['Food', 'Transport', 'Activities', 'Shopping', 'Other'];
 
-  const [currency, setCurrency] = useState<'USD' | 'AED'>('USD');
+  const handleAddExpense = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!description.trim() || !amount || parseFloat(amount) <= 0) return;
 
-  const total = useMemo(() => {
-    return budget.reduce((sum, cat) => sum + cat.value, 0);
-  }, [budget]);
+    const newExpense: Expense = {
+      id: Date.now(),
+      description: description.trim(),
+      amount: parseFloat(amount),
+      category,
+    };
 
-  const updateValue = (id: string, newValue: number) => {
-    setBudget((prev) =>
-      prev.map((cat) => (cat.id === id ? { ...cat, value: Math.max(0, newValue) } : cat))
-    );
+    setExpenses([...expenses, newExpense]);
+    setDescription('');
+    setAmount('');
+    setCategory('Food');
+    setRemainingBudget(remainingBudget - parseFloat(amount));
   };
 
-  const resetBudget = () => {
-    setBudget((prev) => prev.map((cat) => ({ ...cat, value: 0 })));
-  };
-
-  const fillSuggested = () => {
-    setBudget((prev) =>
-      prev.map((cat) => ({
-        ...cat,
-        value: Math.round((cat.suggestedMin + cat.suggestedMax) / 2),
-      }))
-    );
-  };
-
-  const displayTotal = currency === 'AED' ? Math.round(total * 3.67) : total;
-  const currencySymbol = currency === 'AED' ? 'AED ' : '$';
-
-  const getProgressColor = (value: number, min: number, max: number) => {
-    if (value === 0) return 'bg-gray-700';
-    const ratio = value / max;
-    if (ratio < 0.5) return 'bg-green-500';
-    if (ratio < 0.8) return 'bg-amber-500';
-    return 'bg-orange-500';
-  };
+  const totalSpent = expenses.reduce((sum, exp) => sum + exp.amount, 0);
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Section Header */}
-        <div className={`text-center mb-12 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-          <span className="inline-block px-4 py-2 glass-card rounded-full text-amber-400 text-sm font-medium mb-4">
-            💰 Money Matters
+    <div className="space-y-6">
+      <h2 className="text-2xl font-bold text-white">Budget Tracker</h2>
+      <form onSubmit={handleAddExpense} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="block text-sm font-medium text-white/80 mb-1">Description</label>
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-d4a373"
+              placeholder="e.g., Burj Khalifa tickets"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-white/80 mb-1">Amount (AED)</label>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-d4a373"
+              min="0"
+              step="0.01"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-white/80 mb-1">Category</label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-d4a373"
+            >
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="md:col-span-2 flex justify-end">
+            <button
+              type="submit"
+              className="bg-d4a373 hover:bg-d4a373/90 text-white font-medium px-5 py-2 rounded-lg transition-transform duration-200 hover:scale-105"
+            >
+              Add Expense
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+        <div className="flex justify-between items-center mb-4">
+          <span className="text-lg font-semibold text-white">Summary</span>
+          <span className="text-d4a373 font-bold">
+            Total Spent: {totalSpent.toFixed(2)} AED | Remaining Budget: {remainingBudget.toFixed(2)} AED
           </span>
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="gradient-text">Budget Tracker</span>
-          </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Plan your spending across categories to stay on track
-          </p>
         </div>
-
-        {/* Currency Toggle & Actions */}
-        <div className={`flex flex-wrap items-center justify-between gap-4 mb-8 ${isVisible ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>
-          <div className="flex items-center gap-2 glass-card rounded-xl p-1">
-            <button
-              onClick={() => setCurrency('USD')}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                currency === 'USD'
-                  ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-lg'
-                  : 'text-gray-400 hover:text-amber-400'
-              }`}
-            >
-              USD ($)
-            </button>
-            <button
-              onClick={() => setCurrency('AED')}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                currency === 'AED'
-                  ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-lg'
-                  : 'text-gray-400 hover:text-amber-400'
-              }`}
-            >
-              AED (د.إ)
-            </button>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <button
-              onClick={fillSuggested}
-              className="px-4 py-2 glass-card rounded-lg text-sm text-amber-400 hover:border-amber-500/40 transition-all duration-300"
-            >
-              ✨ Fill Suggested
-            </button>
-            <button
-              onClick={resetBudget}
-              className="px-4 py-2 glass-card rounded-lg text-sm text-gray-400 hover:text-red-400 hover:border-red-500/30 transition-all duration-300"
-            >
-              🔄 Reset
-            </button>
-          </div>
-        </div>
-
-        {/* Budget Categories */}
-        <div className="space-y-4 mb-8">
-          {budget.map((category, index) => (
-            <div
-              key={category.id}
-              className={`glass-card glass-card-hover rounded-xl p-5 transition-all duration-500 ${
-                isVisible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-              style={{ animationDelay: `${(index + 3) * 100}ms` }}
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                {/* Icon & Label */}
-                <div className="flex items-center gap-3 sm:w-48 flex-shrink-0">
-                  <span className="text-2xl">{category.icon}</span>
+        {expenses.length > 0 ? (
+          <ul className="space-y-3">
+            {expenses
+              .slice()
+              .sort((a, b) => b.id - a.id)
+              .map((exp) => (
+                <li
+                  key={exp.id}
+                  className="flex justify-between items-center p-3 bg-white/5 rounded-lg"
+                >
                   <div>
-                    <h3 className="font-semibold text-white">{category.label}</h3>
-                    <p className="text-xs text-gray-500">{category.tips}</p>
+                    <span className="font-medium text-white">{exp.description}</span>
+                    <span className="block text-sm text-white/60">{exp.category}</span>
                   </div>
-                </div>
-
-                {/* Input */}
-                <div className="flex-1">
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-500 font-semibold">
-                      {currencySymbol}
-                    </span>
-                    <input
-                      type="number"
-                      value={category.value || ''}
-                      onChange={(e) => updateValue(category.id, Number(e.target.value))}
-                      placeholder="0"
-                      className="w-full pl-10 pr-4 py-3 bg-gray-900/50 border border-amber-800/30 rounded-lg text-white font-semibold focus:outline-none focus:border-amber-500/60 focus:ring-2 focus:ring-amber-500/20 transition-all duration-300"
-                    />
-                  </div>
-
-                  {/* Progress Bar */}
-                  <div className="mt-2 h-2 bg-gray-800 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${getProgressColor(
-                        category.value,
-                        category.suggestedMin,
-                        category.suggestedMax
-                      )}`}
-                      style={{
-                        width: `${Math.min(100, (category.value / category.suggestedMax) * 100)}%`,
-                      }}
-                    />
-                  </div>
-                  <div className="flex justify-between mt-1">
-                    <span className="text-xs text-gray-600">
-                      {currencySymbol}{category.suggestedMin}
-                    </span>
-                    <span className="text-xs text-gray-600">
-                      {currencySymbol}{category.suggestedMax}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Total */}
-        <div
-          className={`glass-card rounded-2xl p-8 text-center transition-all duration-500 ${
-            isVisible ? 'animate-scale-in delay-800' : 'opacity-0'
-          }`}
-        >
-          <p className="text-gray-400 text-sm uppercase tracking-wider mb-2">Estimated Total</p>
-          <p className="text-5xl sm:text-6xl font-bold gradient-text mb-2">
-            {currencySymbol}{displayTotal.toLocaleString()}
-          </p>
-          <p className="text-gray-500 text-sm">
-            {currency === 'USD'
-              ? `≈ AED ${Math.round(total * 3.67).toLocaleString()}`
-              : `≈ $${total.toLocaleString()} USD`}
-          </p>
-        </div>
+                  <span className="text-d4a373 font-medium">{exp.amount.toFixed(2)} AED</span>
+                </li>
+              ))}
+          </ul>
+        ) : (
+          <p className="text-white/60 text-center py-4">No expenses added yet.</p>
+        )}
       </div>
-    </section>
+    </div>
   );
 };
 
